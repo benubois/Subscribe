@@ -44,8 +44,7 @@ init =->
     $(document).ready () ->
       onDeviceReady()
   else
-    document.addEventListener("deviceready", onDeviceReady, false)
-  
+  document.addEventListener("deviceready", onDeviceReady, false)
 
 # getAuth msg, (auth) ->
 #   getToken msg, auth, (token) ->
