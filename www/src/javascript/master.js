@@ -1,16 +1,32 @@
-var getAuth, getToken, init, onDeviceReady;
+var config, getAuth, getToken, init, onDeviceReady;
+
+config = {
+  env: function() {
+    if (window.location.hostname === 'subscribe.benubois.com.dev') {
+      return 'browser';
+    } else {
+      return 'device';
+    }
+  },
+  host: function() {
+    var host;
+    if ('browser' === config.env()) {
+      return host = 'http://subscribe.benubois.com.dev/index.php';
+    } else {
+      return host = 'https://www.google.com';
+    }
+  }
+};
 
 getAuth = function(user, pass, cb) {
-  alert(user);
-  alert(pass);
   return $.ajax({
-    url: "https://www.google.com/accounts/ClientLogin",
+    url: "" + (config.host()) + "/accounts/ClientLogin",
     data: {
       "service": "reader",
       "Email": user,
       "Passwd": pass
     },
-    success: function(data, textStatus) {
+    success: function(data) {
       return cb(data.match(/Auth=(.*)/)[1]);
     },
     error: function(data) {
@@ -18,9 +34,10 @@ getAuth = function(user, pass, cb) {
     }
   });
 };
+
 getToken = function(auth, cb) {
   return $.ajax({
-    url: "http://www.google.com/reader/api/0/token",
+    url: "" + (config.host()) + "/reader/api/0/token",
     headers: {
       "Content-type": "application/x-www-form-urlencoded",
       "Authorization": "GoogleLogin auth=" + auth
@@ -46,5 +63,11 @@ onDeviceReady = function() {
 };
 
 init = function() {
-  return document.addEventListener("deviceready", onDeviceReady, false);
+  if ('browser' === config.env()) {
+    return $(document).ready(function() {
+      return onDeviceReady();
+    });
+  } else {
+    return document.addEventListener("deviceready", onDeviceReady, false);
+  }
 };

@@ -1,20 +1,30 @@
+config =
+  env: ->
+    if window.location.hostname is 'subscribe.benubois.com.dev'
+      'browser'
+    else
+      'device'
+  host: ->
+    if 'browser' is config.env()
+      host = 'http://subscribe.benubois.com.dev/index.php'
+    else
+      host = 'https://www.google.com'
+
 getAuth = (user, pass, cb) ->
-  alert(user);
-  alert(pass);
   $.ajax
-    url: "https://www.google.com/accounts/ClientLogin"
+    url: "#{config.host()}/accounts/ClientLogin"
     data:
       "service": "reader"
       "Email": user
       "Passwd": pass
-    success: (data, textStatus) ->
+    success: (data) ->
       cb data.match(/Auth=(.*)/)[1]
     error: (data) ->
       alert('failed')
 
 getToken = (auth, cb) ->
   $.ajax
-    url: "http://www.google.com/reader/api/0/token"
+    url: "#{config.host()}/reader/api/0/token"
     headers:
       "Content-type": "application/x-www-form-urlencoded"
       "Authorization": "GoogleLogin auth=#{auth}"
@@ -30,7 +40,12 @@ onDeviceReady = ->
         alert(token)
 
 init =->
-  document.addEventListener("deviceready", onDeviceReady, false)
+  if 'browser' is config.env()
+    $(document).ready () ->
+      onDeviceReady()
+  else
+    document.addEventListener("deviceready", onDeviceReady, false)
+  
 
 # getAuth msg, (auth) ->
 #   getToken msg, auth, (token) ->
