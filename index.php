@@ -10,6 +10,8 @@ foreach (apache_request_headers() as $key => $value)
 	}
 }
 
+error_log(var_export($request_headers, TRUE));
+
 function http_request($url, $headers)
 {
 	if (!empty($_GET)) 
