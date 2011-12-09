@@ -1,4 +1,9 @@
 Subscribe =
+  logPush: ->
+    window.logHistory = window.logHistory || []
+    window.logHistory.push(arguments)
+    if window.console
+      console.log( Array.prototype.slice.call(arguments) )
   env: ->
     if window.location.hostname is 'subscribe.benubois.com.dev'
       'browser'
@@ -9,52 +14,102 @@ Subscribe =
       host = 'http://subscribe.benubois.com.dev/index.php'
     else
       host = 'https://www.google.com'
-  logPush: ->
-    window.logHistory = window.logHistory || []
-    window.logHistory.push(arguments)
-    if window.console
-      console.log( Array.prototype.slice.call(arguments) )
   onDeviceReady: ->
     $.each Subscribe.init, (i, item) -> 
-  	  item();
+      item();
       
-Subscribe.init =
-  env: ->
-    console.log 'init'
-
+class Subscribe.api
+  subscribe: (domain) ->
+    subRequest = client.subscribe 'http://www.pauljmartinez.com'
+    subRequest.fail (data) ->
+      if 400 is data.status
+        
+        # If token is invalid, get a new one and try again
+        login = client.login()
+        login.done () ->
+          subRequest = client.subscribe 'http://www.pauljmartinez.com'
 
 class Subscribe.ReaderApi
-  constructor: (options) ->
+  constructor: () ->
     @host = 'http://subscribe.benubois.com.dev/index.php'
     @auth = null
     @token = null
-    @login options
-  
-  readerSubscribe: (domain) ->
+
+  details: () ->
     $.ajax
-      url: "#{@host}/accounts/ClientLogin"
+      url: "#{@host}/reader/api/0/stream/details"
       data:
-        "quickadd": @domain
-        "ac": 'subscribe'
-        "T": @token
+        s: 'feed/http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml'
+        tz: '-480'
+        fetchTrends: 'false'
+        output: 'json'
+        client: 'Subscribe/1.0.0'
+        ck: Math.round new Date().getTime()
+      dataType: 'json'
       headers:
-        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        "Authorization": "GoogleLogin auth=#{@auth}"
+      success: (data) ->
+        console.log data
+        # list = ich.subsciption_list_template(data)
+        # $("#subsciption_list").html list
+
+  list: () ->
+    $.ajax
+      url: "#{@host}/reader/api/0/subscription/list"
+      data:
+        output: "json"
+        ck: Math.round new Date().getTime() / 1000
+        client: 'Subscribe/1.0.0'
+      dataType: 'json'
+      headers:
+        "Authorization": "GoogleLogin auth=#{@auth}"
+      success: (data) ->
+        console.log data
+        list = ich.subsciption_list_template(data)
+        $("#subsciption_list").html list
+  
+  subscribe: (domain) ->
+    
+    queryString = $.param
+      'client': 'scroll'
+      "quickadd": domain
+      "ac": 'subscribe'
+      "T": @token
+
+    $.ajax
+      type: "POST"
+      url: "#{@host}/reader/api/0/subscription/quickadd?#{queryString}"
+      headers:
         "Content-Length": '0'
         "Authorization": "GoogleLogin auth=#{@auth}"
-      success: (data) =>
-        console.log successfully subscribed
-      error: (data) =>
-        console.log subscription error
+        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+      success: (data) ->
+        console.log data
   
   # PRIVATE METHODS
-  login: (options) ->
-    authRequest = @getAuth options.username, options.password
-  
-    authRequest.success (data) =>
-      tokenRequest = @getToken @auth
-    authRequest.error (data) =>
-      alert('Invalid username or password')
-  
+  login: () ->
+    dfd = $.Deferred()
+    
+    # Get Google login info from keychain
+    credentials = Subscribe.getLogin()
+    
+    # When the login info returns, complete the authentication process
+    credentials.done (login) =>
+      
+      # Get authorization
+      authRequest = @getAuth login.username, login.password
+      authRequest.success (data) =>
+        
+        # Get token
+        tokenRequest = @getToken @auth, dfd
+      authRequest.error (data) =>
+        # Auth failed, callers can use login.fail
+        dfd.reject()
+        alert('Invalid username or password')
+    
+    # Return the defered promise so callers can use login.done()
+    dfd.promise()
+
   getAuth: (username, password) ->
     $.ajax
       url: "#{@host}/accounts/ClientLogin"
@@ -67,20 +122,43 @@ class Subscribe.ReaderApi
       error: (data) =>
         alert('Authentication error')
 
-  getToken: (auth) ->
+  getToken: (auth, dfd) ->
     $.ajax
       url: "#{@host}/reader/api/0/token"
       headers:
         "Content-type": "application/x-www-form-urlencoded"
         "Authorization": "GoogleLogin auth=#{auth}"
       success: (data) =>
+        dfd.resolve()
         @token = data
       error: (data) =>
         alert('Authentication error')
 
+Subscribe.init =
+  login: ->
+    apiClient = new Subscribe.ReaderApi
+    login = apiClient.login()
+    login.done () ->
+      # Set up the client for the rest of the api to use
+      Subscribe.apiClient = apiClient
+      
+      # Publish event other stuff can subscribe to
+      $(document).trigger 'subscribeLogin';
+  loginDone: ->
+    $(document).on 'subscribeLogin', ->
+      console.log 'logged in'
+      Subscribe.apiClient.list()
+
+Subscribe.getLogin = ->
+    dfd = $.Deferred()
+    dfd.resolve
+      username: 'bbsaid'
+      password: 'Vhv94X(ZF;BWyW'
+    dfd.promise()
+
 init =->
   if 'browser' is Subscribe.env()
     $(document).ready () ->
-      Subscribe.onDeviceReady()
+      # Subscribe.onDeviceReady()
   else
   document.addEventListener("deviceready", Subscribe.onDeviceReady, false)

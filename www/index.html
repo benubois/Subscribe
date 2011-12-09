@@ -8,13 +8,18 @@
 		<link rel="stylesheet" href="lib/themes/apple/theme.css" />
         <script src="lib/jqtouch/jquery-1.4.2.js"></script>
         <script src="lib/jqtouch/jqtouch.js"></script>
-        <script src="src/javascript/master.js"></script>
+        <script src="lib/icanhaz.js"></script>
+
+		<script src="src/javascript/master.js"></script>
+
         <script type="text/javascript" charset="utf-8">
             var jQT = new $.jQTouch();
             </script>
     </head>
-    <body onLoad="init()">
+    <body>
+    <!-- <body onLoad="init()"> -->
         <div id="jqt">
+			<!--
 			<div id="login" class="current">
                 <div class="toolbar">
                     <h1>Subscribe</h1>
@@ -29,68 +34,38 @@
 					<p>&nbsp;</p>
 				</form>
 			</div>
-            <div id="main">
+			-->
+            <div id="home">
                 <div class="toolbar">
                     <h1>Subscribe</h1>
 					<a class="button slideup add" href="#add">+</a>
                 </div>
                 <ul class="edgetoedge view">
-                    <li class="arrow"><a href="#">Flintstone, <em>Fred</em></a></li>
-                    <li><a href="#">Flintstone, <em>Pebble</em></a></li>
-                    <li><a href="#">Flintstone, <em>Wilma</em></a></li>
-                    <li><a href="#">Jetson, <em>Elroy</em></a></li>
-                    <li><a href="#">Jetson, <em>George</em></a></li>
-                    <li><a href="#">Jetson, <em>Jane</em></a></li>
-                    <li><a href="#">Jetson, <em>Judy</em></a></li>
-                    <li><a href="#">Rubble, <em>Bambam</em></a></li>
-                    <li><a href="#">Rubble, <em>Barney</em></a></li>
-                    <li><a href="#">Rubble, <em>Betty</em></a></li>
-                    <li><a href="#">Flintstone, <em>Fred</em></a></li>
-                    <li><a href="#">Flintstone, <em>Pebble</em></a></li>
-                    <li><a href="#">Flintstone, <em>Wilma</em></a></li>
-                    <li><a href="#">Jetson, <em>Elroy</em></a></li>
-                    <li><a href="#">Jetson, <em>George</em></a></li>
-                    <li><a href="#">Jetson, <em>Jane</em></a></li>
-                    <li><a href="#">Jetson, <em>Judy</em></a></li>
-                    <li><a href="#">Rubble, <em>Bambam</em></a></li>
-                    <li><a href="#">Rubble, <em>Barney</em></a></li>
-                    <li><a href="#">Rubble, <em>Betty</em></a></li>
-                    <li><a href="#">Flintstone, <em>Fred</em></a></li>
-                    <li><a href="#">Flintstone, <em>Pebble</em></a></li>
-                    <li><a href="#">Flintstone, <em>Wilma</em></a></li>
-                    <li><a href="#">Jetson, <em>Elroy</em></a></li>
-                    <li><a href="#">Jetson, <em>George</em></a></li>
-                    <li><a href="#">Jetson, <em>Jane</em></a></li>
-                    <li><a href="#">Jetson, <em>Judy</em></a></li>
-                    <li><a href="#">Rubble, <em>Bambam</em></a></li>
-                    <li><a href="#">Rubble, <em>Barney</em></a></li>
-                    <li><a href="#">Rubble, <em>Betty</em></a></li>
-                    <li><a href="#">Flintstone, <em>Fred</em></a></li>
-                    <li><a href="#">Flintstone, <em>Pebble</em></a></li>
-                    <li><a href="#">Flintstone, <em>Wilma</em></a></li>
-                    <li><a href="#">Jetson, <em>Elroy</em></a></li>
-                    <li><a href="#">Jetson, <em>George</em></a></li>
-                    <li><a href="#">Jetson, <em>Jane</em></a></li>
-                    <li><a href="#">Jetson, <em>Judy</em></a></li>
-                    <li><a href="#">Rubble, <em>Bambam</em></a></li>
-                    <li><a href="#">Rubble, <em>Barney</em></a></li>
-                    <li><a href="#">Rubble, <em>Betty</em></a></li>
-                    <li><a href="#">Flintstone, <em>Fred</em></a></li>
-                    <li><a href="#">Flintstone, <em>Pebble</em></a></li>
-                    <li><a href="#">Flintstone, <em>Wilma</em></a></li>
-                    <li><a href="#">Jetson, <em>Elroy</em></a></li>
-                    <li><a href="#">Jetson, <em>George</em></a></li>
-                    <li><a href="#">Jetson, <em>Jane</em></a></li>
-                    <li><a href="#">Jetson, <em>Judy</em></a></li>
-                    <li><a href="#">Rubble, <em>Bambam</em></a></li>
-                    <li><a href="#">Rubble, <em>Barney</em></a></li>
-                    <li><a href="#">Rubble, <em>Betty</em></a></li>
+					<script id="subsciption_list_template" type="text/html">
+						{{#subscriptions}}
+                    		<li class="arrow"><a href="#">{{ title }}</a></li>
+						{{/subscriptions}}
+					</script>
+					
+                    <div id="subsciption_list"></div>
                 </ul>
             </div>
+			<div id="details" class="current">
+                <div class="toolbar">
+                    <h1>Feed Details</h1>
+					<a class="back" href="#home">Feeds</a>
+                </div>
+				<ul class="rounded">
+					<li>Title </li>
+					<li class="arrow">URL</li>
+					<li class="arrow">Feed URL</li>
+				</ul>
+				<a href="#" class="redButton">Unsubscribe</a>
+			</div>
 			<div id="add" class="selectable">
 				<div class="toolbar">
                     <h1>New</h1>
-					<a class="button cancel" href="#">Cancel</a>
+					<a class="button cancel" href="#home">Cancel</a>
 					<a class="button goback" href="#">Add</a>
                 </div>
 				<form class="view">

@@ -1,6 +1,6 @@
 <?php
 $request_headers = array();
-$approved_headers = array('Authorization', 'Content-type');
+$approved_headers = array('Authorization', 'Content-type', 'Content-length');
 
 foreach (apache_request_headers() as $key => $value) 
 {
@@ -8,6 +8,10 @@ foreach (apache_request_headers() as $key => $value)
 	{
 		array_push($request_headers, "{$key}: {$value}");
 	}
+}
+if (condition)
+{
+	# code...
 }
 
 error_log(var_export($request_headers, TRUE));
@@ -24,6 +28,8 @@ function http_request($url, $headers)
 
 	if ('POST' == $_SERVER['REQUEST_METHOD'])
 	{
+		if ('POST' == $_SERVER['REQUEST_METHOD'])
+		$headers["Content-Length"] = '0';
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($_POST));
 	}

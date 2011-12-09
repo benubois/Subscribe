@@ -1,6 +1,11 @@
 var Subscribe, init;
 
 Subscribe = {
+  logPush: function() {
+    window.logHistory = window.logHistory || [];
+    window.logHistory.push(arguments);
+    if (window.console) return console.log(Array.prototype.slice.call(arguments));
+  },
   env: function() {
     if (window.location.hostname === 'subscribe.benubois.com.dev') {
       return 'browser';
@@ -16,11 +21,6 @@ Subscribe = {
       return host = 'https://www.google.com';
     }
   },
-  logPush: function() {
-    window.logHistory = window.logHistory || [];
-    window.logHistory.push(arguments);
-    if (window.console) return console.log(Array.prototype.slice.call(arguments));
-  },
   onDeviceReady: function() {
     return $.each(Subscribe.init, function(i, item) {
       return item();
@@ -28,55 +28,118 @@ Subscribe = {
   }
 };
 
-Subscribe.init = {
-  env: function() {
-    return console.log('init');
-  }
-};
+Subscribe.api = (function() {
 
-Subscribe.ReaderApi = (function() {
+  function api() {}
 
-  function ReaderApi(options) {
-    this.host = 'http://subscribe.benubois.com.dev/index.php';
-    this.auth = null;
-    this.token = null;
-    this.login(options);
-  }
-
-  ReaderApi.prototype.readerSubscribe = function(domain) {
-    var _this = this;
-    return $.ajax({
-      url: "" + this.host + "/accounts/ClientLogin",
-      data: {
-        "quickadd": this.domain,
-        "ac": 'subscribe',
-        "T": this.token
-      },
-      headers: {
-        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-        "Content-Length": '0',
-        "Authorization": "GoogleLogin auth=" + this.auth
-      },
-      success: function(data) {
-        return console.log(successfully(subscribed));
-      },
-      error: function(data) {
-        return console.log(subscription(error));
+  api.prototype.subscribe = function(domain) {
+    var subRequest;
+    subRequest = client.subscribe('http://www.pauljmartinez.com');
+    return subRequest.fail(function(data) {
+      var login;
+      if (400 === data.status) {
+        login = client.login();
+        return login.done(function() {
+          return subRequest = client.subscribe('http://www.pauljmartinez.com');
+        });
       }
     });
   };
 
-  ReaderApi.prototype.login = function(options) {
-    var authRequest;
+  return api;
+
+})();
+
+Subscribe.ReaderApi = (function() {
+
+  function ReaderApi() {
+    this.host = 'http://subscribe.benubois.com.dev/index.php';
+    this.auth = null;
+    this.token = null;
+  }
+
+  ReaderApi.prototype.details = function() {
+    return $.ajax({
+      url: "" + this.host + "/reader/api/0/stream/details",
+      data: {
+        s: 'feed/http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml',
+        tz: '-480',
+        fetchTrends: 'false',
+        output: 'json',
+        client: 'Subscribe/1.0.0',
+        ck: Math.round(new Date().getTime())
+      },
+      dataType: 'json',
+      headers: {
+        "Authorization": "GoogleLogin auth=" + this.auth
+      },
+      success: function(data) {
+        return console.log(data);
+      }
+    });
+  };
+
+  ReaderApi.prototype.list = function() {
+    return $.ajax({
+      url: "" + this.host + "/reader/api/0/subscription/list",
+      data: {
+        output: "json",
+        ck: Math.round(new Date().getTime() / 1000),
+        client: 'Subscribe/1.0.0'
+      },
+      dataType: 'json',
+      headers: {
+        "Authorization": "GoogleLogin auth=" + this.auth
+      },
+      success: function(data) {
+        var list;
+        console.log(data);
+        list = ich.subsciption_list_template(data);
+        return $("#subsciption_list").html(list);
+      }
+    });
+  };
+
+  ReaderApi.prototype.subscribe = function(domain) {
+    var queryString;
+    queryString = $.param({
+      'client': 'scroll',
+      "quickadd": domain,
+      "ac": 'subscribe',
+      "T": this.token
+    });
+    return $.ajax({
+      type: "POST",
+      url: "" + this.host + "/reader/api/0/subscription/quickadd?" + queryString,
+      headers: {
+        "Content-Length": '0',
+        "Authorization": "GoogleLogin auth=" + this.auth,
+        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+      },
+      success: function(data) {
+        return console.log(data);
+      }
+    });
+  };
+
+  ReaderApi.prototype.login = function() {
+    var credentials, dfd;
     var _this = this;
-    authRequest = this.getAuth(options.username, options.password);
-    authRequest.success(function(data) {
-      var tokenRequest;
-      return tokenRequest = _this.getToken(_this.auth);
+    dfd = $.Deferred();
+    credentials = Subscribe.getLogin();
+    credentials.done(function(login) {
+      var authRequest;
+      authRequest = _this.getAuth(login.username, login.password);
+      authRequest.success(function(data) {
+        var tokenRequest;
+        return tokenRequest = _this.getToken(_this.auth, dfd);
+      });
+      return authRequest.error(function(data) {
+        dfd.reject();
+        return alert('Invalid username or password');
+      });
     });
-    return authRequest.error(function(data) {
-      return alert('Invalid username or password');
-    });
+    return dfd.promise();
   };
 
   ReaderApi.prototype.getAuth = function(username, password) {
@@ -97,7 +160,7 @@ Subscribe.ReaderApi = (function() {
     });
   };
 
-  ReaderApi.prototype.getToken = function(auth) {
+  ReaderApi.prototype.getToken = function(auth, dfd) {
     var _this = this;
     return $.ajax({
       url: "" + this.host + "/reader/api/0/token",
@@ -106,6 +169,7 @@ Subscribe.ReaderApi = (function() {
         "Authorization": "GoogleLogin auth=" + auth
       },
       success: function(data) {
+        dfd.resolve();
         return _this.token = data;
       },
       error: function(data) {
@@ -118,11 +182,37 @@ Subscribe.ReaderApi = (function() {
 
 })();
 
+Subscribe.init = {
+  login: function() {
+    var apiClient, login;
+    apiClient = new Subscribe.ReaderApi;
+    login = apiClient.login();
+    return login.done(function() {
+      Subscribe.apiClient = apiClient;
+      return $(document).trigger('subscribeLogin');
+    });
+  },
+  loginDone: function() {
+    return $(document).on('subscribeLogin', function() {
+      console.log('logged in');
+      return Subscribe.apiClient.list();
+    });
+  }
+};
+
+Subscribe.getLogin = function() {
+  var dfd;
+  dfd = $.Deferred();
+  dfd.resolve({
+    username: 'bbsaid',
+    password: 'Vhv94X(ZF;BWyW'
+  });
+  return dfd.promise();
+};
+
 init = function() {
   if ('browser' === Subscribe.env()) {
-    $(document).ready(function() {
-      return Subscribe.onDeviceReady();
-    });
+    $(document).ready(function() {});
   } else {
 
   }
