@@ -34,7 +34,7 @@ class Subscribe.ReaderApi
     @host = 'http://subscribe.benubois.com.dev/index.php'
     @auth = null
     @token = null
-
+  
   details: () ->
     $.ajax
       url: "#{@host}/reader/api/0/stream/details"
