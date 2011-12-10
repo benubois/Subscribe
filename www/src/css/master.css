@@ -1,0 +1,25 @@
+/* JQtouch overrides */
+#jqt .back {
+    -webkit-border-image: url(../images/backButton.png) 0 16 0 28;
+	background-size: 51px 30px;
+}
+
+#jqt .back.active {
+    -webkit-border-image: url(../images/backButtonTouch.png) 0 16 0 28;
+}
+
+#jqt .toolbar {
+    background: url(../images/toolbar.png) #6d84a2 repeat-x;
+	background-size: 1px 45px;
+}
+
+#jqt .redButton {
+    -webkit-border-image: url(../images/redButton.png) 0 24 0 24;
+	background-size: 29px 46px;
+    color: #FFFFFF;
+}
+
+#jqt .toolbar {
+	position: fixed;
+	width: 100%;
+}

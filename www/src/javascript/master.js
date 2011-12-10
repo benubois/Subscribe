@@ -185,6 +185,7 @@ Subscribe.ReaderApi = (function() {
 Subscribe.init = {
   login: function() {
     var apiClient, login;
+    console.log('login');
     apiClient = new Subscribe.ReaderApi;
     login = apiClient.login();
     return login.done(function() {
@@ -212,7 +213,9 @@ Subscribe.getLogin = function() {
 
 init = function() {
   if ('browser' === Subscribe.env()) {
-    $(document).ready(function() {});
+    $(document).ready(function() {
+      return Subscribe.onDeviceReady();
+    });
   } else {
 
   }

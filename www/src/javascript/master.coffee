@@ -136,6 +136,7 @@ class Subscribe.ReaderApi
 
 Subscribe.init =
   login: ->
+    console.log 'login'
     apiClient = new Subscribe.ReaderApi
     login = apiClient.login()
     login.done () ->
@@ -159,6 +160,6 @@ Subscribe.getLogin = ->
 init =->
   if 'browser' is Subscribe.env()
     $(document).ready () ->
-      # Subscribe.onDeviceReady()
+      Subscribe.onDeviceReady()
   else
   document.addEventListener("deviceready", Subscribe.onDeviceReady, false)
