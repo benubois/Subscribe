@@ -19,7 +19,17 @@
     color: #FFFFFF;
 }
 
-#jqt .toolbar {
-	position: fixed;
-	width: 100%;
+#jqt .button, #jqt .back, #jqt .cancel, #jqt .add {
+	background-size: 16px 29px;
+    -webkit-border-image: url(../images/toolButton.png) 0 10 0 10;
 }
+
+#jqt .button.blue {
+	-webkit-border-image: url(../images/activeButton.png) 0 10 0 10;	
+}
+
+#jqt .button.active, #jqt .cancel.active, #jqt .add.active {
+	background-size: 16px 29px;
+    -webkit-border-image: url(../images/toolButtonTouch.png) 0 10 0 10;	
+}
+

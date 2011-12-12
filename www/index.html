@@ -9,54 +9,83 @@
 	<link rel="stylesheet" href="src/css/master.css" />
 	<script src="lib/jqtouch/jquery-1.4.2.js"></script>
 	<script src="lib/jqtouch/jqtouch.js"></script>
+	<script type="text/javascript" charset="utf-8">
+    var jQT = new $.jQTouch({
+        addGlossToIcon: false,
+        statusBar: 'black',
+        preloadImages: [
+            'src/images/backButtonTouch.png',
+            'src/images/toolButtonTouch.png',
+            'src/images/activeButton.png'
+         ]
+    });
+	</script>
 	<script src="lib/icanhaz.js"></script>
 
-	<script src="src/javascript/master.js"></script>
-
+	<script src="src/javascript/subscribe.js"></script>
+	
 	<script type="text/javascript" charset="utf-8">
-	var jQT = new $.jQTouch();
+	$(function(){
+	    
+		$('#add').tap(function(){
+			Subscribe.apiClient.request();
+		});
+	});
+        
 	</script>
+
 </head>
-<body onLoad="init()">
+<body onLoad="Subscribe.load()">
 	<div id="jqt">
-		<div id="login" class="current">
+		<div id="login">
 			<div class="toolbar">
 				<h1>Subscribe</h1>
 				<a class="button" href="#" id="button-login">Login</a>
 			</div>
-			<form class="view">
+			<div class="view">
 				<ul class="edit rounded">
 					<li><input type="email" name="username" placeholder="Username"  /></li>
 					<li><input type="password" name="password" placeholder="Password" /></li>
 				</ul>
-			</form>
+			</div>
 		</div>
 		<div id="home" class="current">
 			<div class="toolbar">
 				<h1>Subscribe</h1>
 				<a class="button slideup add" href="#add">+</a>
 			</div>
+			<div id="subscriptions"></div>
+			
+			<script id="subscriptions_list" type="text/html">
+			{{#condition_no_subscriptions}}
+			<div class="view">
+                <ul class="rounded">
+                    <li>No subscriptions. Subscribe!</li>
+                </ul>
+            </div>
+			{{/condition_no_subscriptions}}
+
+			{{#condition_has_subscriptions}}
 			<ul class="edgetoedge view">
-				<script id="subsciption_list_template" type="text/html">
 				{{#subscriptions}}
 					<li class="arrow"><a href="#">{{ title }}</a></li>
 				{{/subscriptions}}
-				</script>
-
 				<div id="subsciption_list"></div>
 			</ul>
+			{{/condition_has_subscriptions}}
+			</script>
 		</div>
 		<div id="add" class="selectable">
 			<div class="toolbar">
 				<h1>New</h1>
 				<a class="button cancel" href="#home">Cancel</a>
-				<a class="button goback" href="#">Add</a>
+				<a class="button blue goback" href="#home" id="add">Add</a>
 			</div>
-			<form class="view">
+			<div class="view">
 				<ul class="edit rounded">
-					<li><input type="text" name="name" placeholder="URL" id="some_name" /></li>
+					<li><input type="url" name="url" placeholder="URL" id="url" /></li>
 				</ul>
-			</form>
+			</div>
 		</div>
 	</div>
 </body>

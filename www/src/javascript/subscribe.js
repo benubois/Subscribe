@@ -1,3 +1,68 @@
+var Subscribe;
+
+Subscribe = {
+  logPush: function() {
+    window.logHistory = window.logHistory || [];
+    window.logHistory.push(arguments);
+    if (window.console) return console.log(Array.prototype.slice.call(arguments));
+  },
+  env: function() {
+    if (window.location.hostname === 'subscribe.benubois.com.dev') {
+      return 'browser';
+    } else {
+      return 'device';
+    }
+  },
+  host: function() {
+    var host;
+    if ('browser' === Subscribe.config.env()) {
+      return host = 'http://subscribe.benubois.com.dev/index.php';
+    } else {
+      return host = 'https://www.google.com';
+    }
+  },
+  onDeviceReady: function() {
+    return $.each(Subscribe.init, function(i, item) {
+      return item();
+    });
+  }
+};
+
+Subscribe.init = {
+  login: function() {
+    var apiClient, login;
+    apiClient = new Subscribe.ReaderApi;
+    login = apiClient.login();
+    return login.done(function() {
+      Subscribe.apiClient = apiClient;
+      return $(document).trigger('subscribeLogin');
+    });
+  },
+  loginDone: function() {
+    return $(document).on('subscribeLogin', function() {});
+  }
+};
+
+Subscribe.load = function() {
+  if ('browser' === Subscribe.env()) {
+    $(document).ready(function() {
+      return Subscribe.onDeviceReady();
+    });
+  } else {
+
+  }
+  return document.addEventListener("deviceready", Subscribe.onDeviceReady, false);
+};
+
+Subscribe.getLogin = function() {
+  var dfd;
+  dfd = $.Deferred();
+  dfd.resolve({
+    username: 'subscribeapp.testing',
+    password: 'hAMWCY2+Jfb7,q'
+  });
+  return dfd.promise();
+};
 
 Subscribe.ReaderApi = (function() {
 
@@ -9,13 +74,13 @@ Subscribe.ReaderApi = (function() {
 
   ReaderApi.prototype.request = function(domain) {
     var subRequest;
-    subRequest = this.subscribe('http://www.pauljmartinez.com');
+    subRequest = this.subscribe(domain);
     return subRequest.fail(function(data) {
       var login;
       if (400 === data.status) {
         login = this.login();
         return login.done(function() {
-          return subRequest = this.subscribe('http://www.pauljmartinez.com');
+          return subRequest = this.subscribe(domain);
         });
       }
     });
@@ -55,10 +120,19 @@ Subscribe.ReaderApi = (function() {
         "Authorization": "GoogleLogin auth=" + this.auth
       },
       success: function(data) {
-        var list;
-        console.log(data);
-        list = ich.subsciption_list_template(data);
-        return $("#subsciption_list").html(list);
+        var content;
+        if (0 === data.subscriptions.length) {
+          data.condition_no_subscriptions = true;
+          data.condition_has_subscriptions = false;
+        } else {
+          data.condition_no_subscriptions = false;
+          data.condition_has_subscriptions = true;
+        }
+        content = ich.subscriptions_list(data);
+        return $("#subscriptions").html(content);
+      },
+      error: function(data) {
+        return console.log(data);
       }
     });
   };
@@ -74,13 +148,19 @@ Subscribe.ReaderApi = (function() {
     return $.ajax({
       type: "POST",
       url: "" + this.host + "/reader/api/0/subscription/quickadd?" + queryString,
+      dataType: 'json',
       headers: {
         "Content-Length": '0',
         "Authorization": "GoogleLogin auth=" + this.auth,
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
       },
       success: function(data) {
-        return console.log(data);
+        console.log(data);
+        if (data.streamId != null) {
+          return alert('subscription success');
+        } else {
+          return console.log('no subscription');
+        }
       }
     });
   };
@@ -132,8 +212,8 @@ Subscribe.ReaderApi = (function() {
         "Authorization": "GoogleLogin auth=" + auth
       },
       success: function(data) {
-        dfd.resolve();
-        return _this.token = data;
+        _this.token = data;
+        return dfd.resolve();
       },
       error: function(data) {
         return alert('Authentication error');

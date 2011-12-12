@@ -5,14 +5,14 @@ class Subscribe.ReaderApi
     @token = null
 
   request: (domain) ->
-    subRequest = @subscribe 'http://www.pauljmartinez.com'
+    subRequest = @subscribe domain
     subRequest.fail (data) ->
       if 400 is data.status
 
         # If token is invalid, get a new one and try again
         login = @login()
         login.done () ->
-          subRequest = @subscribe 'http://www.pauljmartinez.com'
+          subRequest = @subscribe domain
   
   details: () ->
     $.ajax
@@ -43,10 +43,17 @@ class Subscribe.ReaderApi
       headers:
         "Authorization": "GoogleLogin auth=#{@auth}"
       success: (data) ->
-        console.log data
-        list = ich.subsciption_list_template(data)
-        $("#subsciption_list").html list
-  
+        if 0 is data.subscriptions.length
+          data.condition_no_subscriptions = true
+          data.condition_has_subscriptions = false
+        else
+          data.condition_no_subscriptions = false
+          data.condition_has_subscriptions = true
+
+        content = ich.subscriptions_list(data)
+        $("#subscriptions").html content  
+      error: (data) ->
+        console.log data  
   
   subscribe: (domain) ->
     
@@ -59,12 +66,19 @@ class Subscribe.ReaderApi
     $.ajax
       type: "POST"
       url: "#{@host}/reader/api/0/subscription/quickadd?#{queryString}"
+      dataType: 'json'
       headers:
         "Content-Length": '0'
         "Authorization": "GoogleLogin auth=#{@auth}"
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
       success: (data) ->
         console.log data
+        if data.streamId?
+          # Subscription was successful, remove the alert
+          alert 'subscription success'
+        else
+          # Update alert contents with unsuccessful request info
+          console.log 'no subscription'
   
   # PRIVATE METHODS
   login: () ->
@@ -109,7 +123,7 @@ class Subscribe.ReaderApi
         "Content-type": "application/x-www-form-urlencoded"
         "Authorization": "GoogleLogin auth=#{auth}"
       success: (data) =>
-        dfd.resolve()
         @token = data
+        dfd.resolve()
       error: (data) =>
         alert('Authentication error')
