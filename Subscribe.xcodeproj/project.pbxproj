@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B533C873149880F200C79394 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B533C872149880F200C79394 /* Default.png */; };
+		B533C875149880F800C79394 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B533C874149880F800C79394 /* Default@2x.png */; };
 		B571E4E014847B9700935F45 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B571E4DF14847B9700935F45 /* Foundation.framework */; };
 		B571E4E214847B9700935F45 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B571E4E114847B9700935F45 /* UIKit.framework */; };
 		B571E4E414847B9700935F45 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B571E4E314847B9700935F45 /* CoreGraphics.framework */; };
@@ -37,6 +39,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B533C872149880F200C79394 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		B533C874149880F800C79394 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		B571E4DB14847B9700935F45 /* Subscribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Subscribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B571E4DF14847B9700935F45 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B571E4E114847B9700935F45 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -106,6 +110,8 @@
 		B571E4CD14847B9700935F45 = {
 			isa = PBXGroup;
 			children = (
+				B533C874149880F800C79394 /* Default@2x.png */,
+				B533C872149880F200C79394 /* Default.png */,
 				B571E52814847C4500935F45 /* www */,
 				B571E4F914847B9700935F45 /* Subscribe */,
 				B571E4DE14847B9700935F45 /* Frameworks */,
@@ -291,6 +297,8 @@
 				B571E51A14847B9700935F45 /* Capture.bundle in Resources */,
 				B571E51C14847B9700935F45 /* PhoneGap.plist in Resources */,
 				B571E52914847C4500935F45 /* www in Resources */,
+				B533C873149880F200C79394 /* Default.png in Resources */,
+				B533C875149880F800C79394 /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,7 +372,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -389,7 +397,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

@@ -10,12 +10,11 @@ Subscribe.init =
       $(document).trigger 'subscribeLogin';
   loginDone: ->
     $(document).on 'subscribeLogin', ->
-      # Subscribe.apiClient.list()
-      # Subscribe.apiClient.request('pauljmartinez.com')
+      Subscribe.apiClient.list()
       
 Subscribe.action =
   subscribe: ->
-    var url = $('#url').val()
+    url = $('#url').val()
     Subscribe.apiClient.request(url)
       
 

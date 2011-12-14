@@ -1,5 +1,5 @@
 Subscribe =
-  logPush: ->
+  log: ->
     window.logHistory = window.logHistory || []
     window.logHistory.push(arguments)
     if window.console
@@ -10,12 +10,10 @@ Subscribe =
     else
       'device'
   host: ->
-    if 'browser' is Subscribe.config.env()
+    if 'browser' is Subscribe.env()
       host = 'http://subscribe.benubois.com.dev/index.php'
     else
       host = 'https://www.google.com'
   onDeviceReady: ->
     $.each Subscribe.init, (i, item) -> 
       item();
-
-

@@ -1,7 +1,7 @@
 var Subscribe;
 
 Subscribe = {
-  logPush: function() {
+  log: function() {
     window.logHistory = window.logHistory || [];
     window.logHistory.push(arguments);
     if (window.console) return console.log(Array.prototype.slice.call(arguments));
@@ -15,7 +15,7 @@ Subscribe = {
   },
   host: function() {
     var host;
-    if ('browser' === Subscribe.config.env()) {
+    if ('browser' === Subscribe.env()) {
       return host = 'http://subscribe.benubois.com.dev/index.php';
     } else {
       return host = 'https://www.google.com';
@@ -39,7 +39,17 @@ Subscribe.init = {
     });
   },
   loginDone: function() {
-    return $(document).on('subscribeLogin', function() {});
+    return $(document).on('subscribeLogin', function() {
+      return Subscribe.apiClient.list();
+    });
+  }
+};
+
+Subscribe.action = {
+  subscribe: function() {
+    var url;
+    url = $('#url').val();
+    return Subscribe.apiClient.request(url);
   }
 };
 
@@ -67,7 +77,7 @@ Subscribe.getLogin = function() {
 Subscribe.ReaderApi = (function() {
 
   function ReaderApi() {
-    this.host = 'http://subscribe.benubois.com.dev/index.php';
+    this.host = Subscribe.host();
     this.auth = null;
     this.token = null;
   }
@@ -178,8 +188,7 @@ Subscribe.ReaderApi = (function() {
         return tokenRequest = _this.getToken(_this.auth, dfd);
       });
       return authRequest.error(function(data) {
-        dfd.reject();
-        return alert('Invalid username or password');
+        return dfd.reject();
       });
     });
     return dfd.promise();
@@ -198,7 +207,8 @@ Subscribe.ReaderApi = (function() {
         return _this.auth = data.match(/Auth=(.*)/)[1];
       },
       error: function(data) {
-        return alert('Authentication error');
+        Subscribe.log(data);
+        return alert('Invalid username or password');
       }
     });
   };

@@ -1,6 +1,6 @@
 class Subscribe.ReaderApi
   constructor: () ->
-    @host = 'http://subscribe.benubois.com.dev/index.php'
+    @host = Subscribe.host()
     @auth = null
     @token = null
 
@@ -99,7 +99,6 @@ class Subscribe.ReaderApi
       authRequest.error (data) =>
         # Auth failed, callers can use login.fail
         dfd.reject()
-        alert('Invalid username or password')
     
     # Return the defered promise so callers can use login.done()
     dfd.promise()
@@ -114,7 +113,8 @@ class Subscribe.ReaderApi
       success: (data) =>
         @auth = data.match(/Auth=(.*)/)[1]
       error: (data) =>
-        alert('Authentication error')
+        Subscribe.log data
+        alert('Invalid username or password')
 
   getToken: (auth, dfd) ->
     $.ajax

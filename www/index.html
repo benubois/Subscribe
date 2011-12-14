@@ -16,6 +16,7 @@
         preloadImages: [
             'src/images/backButtonTouch.png',
             'src/images/toolButtonTouch.png',
+            'src/images/toolbar.png',
             'src/images/activeButton.png'
          ]
     });
@@ -27,9 +28,11 @@
 	<script type="text/javascript" charset="utf-8">
 	$(function(){
 	    
-		$('#add').tap(function(){
-			Subscribe.apiClient.request();
+		$('#add-subscription').tap(function(e){			
+			Subscribe.action.subscribe();
+			e.preventDefault();
 		});
+		
 	});
         
 	</script>
@@ -68,9 +71,8 @@
 			{{#condition_has_subscriptions}}
 			<ul class="edgetoedge view">
 				{{#subscriptions}}
-					<li class="arrow"><a href="#">{{ title }}</a></li>
+					<li><a href="#">{{ title }}</a></li>
 				{{/subscriptions}}
-				<div id="subsciption_list"></div>
 			</ul>
 			{{/condition_has_subscriptions}}
 			</script>
@@ -79,7 +81,7 @@
 			<div class="toolbar">
 				<h1>New</h1>
 				<a class="button cancel" href="#home">Cancel</a>
-				<a class="button blue goback" href="#home" id="add">Add</a>
+				<a class="button blue goback" href="#home" id="add-subscription">Add</a>
 			</div>
 			<div class="view">
 				<ul class="edit rounded">
