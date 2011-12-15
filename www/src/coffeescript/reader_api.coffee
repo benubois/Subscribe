@@ -6,13 +6,15 @@ class Subscribe.ReaderApi
 
   request: (domain) ->
     subRequest = @subscribe domain
-    subRequest.fail (data) ->
+    subRequest.fail (data) =>
       if 400 is data.status
 
         # If token is invalid, get a new one and try again
         login = @login()
-        login.done () ->
+        login.done () =>
           subRequest = @subscribe domain
+        login.fail () ->
+          alert 'Couldn’t log in after 2 tries'
   
   details: () ->
     $.ajax
@@ -22,7 +24,7 @@ class Subscribe.ReaderApi
         tz: '-480'
         fetchTrends: 'false'
         output: 'json'
-        client: 'Subscribe/1.0.0'
+        client: "Subscribe/#{Subscribe.version}"
         ck: Math.round new Date().getTime()
       dataType: 'json'
       headers:
@@ -38,7 +40,7 @@ class Subscribe.ReaderApi
       data:
         output: "json"
         ck: Math.round new Date().getTime() / 1000
-        client: 'Subscribe/1.0.0'
+        client: "Subscribe/#{Subscribe.version}"
       dataType: 'json'
       headers:
         "Authorization": "GoogleLogin auth=#{@auth}"
@@ -58,10 +60,10 @@ class Subscribe.ReaderApi
   subscribe: (domain) ->
     
     queryString = $.param
-      'client': 'scroll'
-      "quickadd": domain
-      "ac": 'subscribe'
-      "T": @token
+      client: "Subscribe/#{Subscribe.version}"
+      quickadd: domain
+      ac: 'subscribe'
+      T: @token
 
     $.ajax
       type: "POST"

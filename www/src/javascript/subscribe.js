@@ -1,6 +1,7 @@
 var Subscribe;
 
 Subscribe = {
+  version: '1.0.0',
   log: function() {
     window.logHistory = window.logHistory || [];
     window.logHistory.push(arguments);
@@ -84,13 +85,17 @@ Subscribe.ReaderApi = (function() {
 
   ReaderApi.prototype.request = function(domain) {
     var subRequest;
+    var _this = this;
     subRequest = this.subscribe(domain);
     return subRequest.fail(function(data) {
       var login;
       if (400 === data.status) {
-        login = this.login();
-        return login.done(function() {
-          return subRequest = this.subscribe(domain);
+        login = _this.login();
+        login.done(function() {
+          return subRequest = _this.subscribe(domain);
+        });
+        return login.fail(function() {
+          return alert('Couldn’t log in after 2 tries');
         });
       }
     });
@@ -104,7 +109,7 @@ Subscribe.ReaderApi = (function() {
         tz: '-480',
         fetchTrends: 'false',
         output: 'json',
-        client: 'Subscribe/1.0.0',
+        client: "Subscribe/" + Subscribe.version,
         ck: Math.round(new Date().getTime())
       },
       dataType: 'json',
@@ -123,7 +128,7 @@ Subscribe.ReaderApi = (function() {
       data: {
         output: "json",
         ck: Math.round(new Date().getTime() / 1000),
-        client: 'Subscribe/1.0.0'
+        client: "Subscribe/" + Subscribe.version
       },
       dataType: 'json',
       headers: {
@@ -150,10 +155,10 @@ Subscribe.ReaderApi = (function() {
   ReaderApi.prototype.subscribe = function(domain) {
     var queryString;
     queryString = $.param({
-      'client': 'scroll',
-      "quickadd": domain,
-      "ac": 'subscribe',
-      "T": this.token
+      client: "Subscribe/" + Subscribe.version,
+      quickadd: domain,
+      ac: 'subscribe',
+      T: this.token
     });
     return $.ajax({
       type: "POST",

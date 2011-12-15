@@ -1,4 +1,5 @@
 Subscribe =
+  version: '1.0.0'
   log: ->
     window.logHistory = window.logHistory || []
     window.logHistory.push(arguments)
