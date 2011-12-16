@@ -3,11 +3,6 @@
 <head>
 	<meta charset="utf-8" />
 	<title>{{ page.title }}</title>
-	<script>
-	if (document.location.host == 'benubois.github.com' || document.location.host == 'benubois.com') {
-		window.location = 'http://subscribeapp.com'
-	}
-	</script>
 	<style type="text/css">
 	body {
 		margin: 0;
@@ -41,6 +36,17 @@
 		text-align: center;
 	}
 	</style>
+	<script>
+		if (document.location.host == 'benubois.github.com' || document.location.host == 'benubois.com') {
+			window.location = 'http://subscribeapp.com'
+		}
+	</script>
+	<script>
+		var _gaq=[['_setAccount','UA-172060-7'],['_trackPageview']];
+		(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+		g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+		s.parentNode.insertBefore(g,s)}(document,'script'));
+	</script>
 </head>
 <body>
 	<table>
