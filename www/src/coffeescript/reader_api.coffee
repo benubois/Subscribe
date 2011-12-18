@@ -4,23 +4,49 @@ class Subscribe.ReaderApi
     @auth = null
     @token = null
 
-  request: (domain) ->
-    subRequest = @subscribe domain
+  subscribe: (domain) ->
+    subRequest = @_subscribe domain
     subRequest.fail (data) =>
       if 400 is data.status
 
         # If token is invalid, get a new one and try again
         login = @login()
         login.done () =>
-          subRequest = @subscribe domain
+          subRequest = @_subscribe domain
         login.fail () ->
           alert 'Couldn’t log in after 2 tries'
   
-  details: () ->
+  details: (feedId) ->
+    dfd = $.Deferred()
+    
+    subRequest = @_details (feedId)
+    
+    subRequest.success (data) ->
+      # get details successful, resolve with info
+      dfd.resolve data
+    
+    subRequest.fail (data) =>
+      if 400 is data.status
+
+        # If token is invalid, get a new one and try again
+        login = @login()
+        login.done () =>
+          subRequest = @_details (feedId)
+          
+          subRequest.success (data) ->
+            # get details successful, resolve with info
+            dfd.resolve data
+        login.fail () ->
+          dfd.reject
+          alert 'Couldn’t log in after 2 tries'
+    
+    dfd.promise()
+  
+  _details: (feedId) ->
     $.ajax
       url: "#{@host}/reader/api/0/stream/details"
       data:
-        s: 'feed/http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml'
+        s: feedId
         tz: '-480'
         fetchTrends: 'false'
         output: 'json'
@@ -30,7 +56,6 @@ class Subscribe.ReaderApi
       headers:
         "Authorization": "GoogleLogin auth=#{@auth}"
       success: (data) ->
-        console.log data
         # list = ich.subsciption_list_template(data)
         # $("#subsciption_list").html list
 
@@ -57,7 +82,7 @@ class Subscribe.ReaderApi
       error: (data) ->
         console.log data  
   
-  subscribe: (domain) ->
+  _subscribe: (domain) ->
     
     queryString = $.param
       client: "Subscribe/#{Subscribe.version}"

@@ -32,7 +32,7 @@
 			Subscribe.action.subscribe();
 			e.preventDefault();
 		});
-		
+				
 	});
         
 	</script>
@@ -71,7 +71,7 @@
 			{{#condition_has_subscriptions}}
 			<ul class="edgetoedge view">
 				{{#subscriptions}}
-					<li><a href="#">{{ title }}</a></li>
+					<li class="arrow"><a href="#detail" id="{{ id }}" class="subscription">{{ title }}</a></li>
 				{{/subscriptions}}
 			</ul>
 			{{/condition_has_subscriptions}}
@@ -88,6 +88,21 @@
 					<li><input type="url" name="url" placeholder="URL" id="url" /></li>
 				</ul>
 			</div>
+		</div>
+		<div id="detail">
+		    <div class="toolbar">
+				<script id="title_template" type="text/html">
+				<span>{{ title }}</span>
+				</script>
+		        <h1 id="title"></h1>
+		        <a class="back" href="#">Feeds</a>
+		    </div>
+			<script id="details_template" type="text/html">
+				<li>Feed URL: {{ feedUrl }}</li>
+				<li>Subscribers: {{ subscribers }}</li>
+			</script>
+		    <ul class="rounded" id="details">
+		    </ul>
 		</div>
 	</div>
 </body>

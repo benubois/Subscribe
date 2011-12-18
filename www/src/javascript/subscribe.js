@@ -43,6 +43,11 @@ Subscribe.init = {
     return $(document).on('subscribeLogin', function() {
       return Subscribe.apiClient.list();
     });
+  },
+  subscriptionTouch: function() {
+    return $('#jqt').on('tap', '.subscription', function(e) {
+      return Subscribe.action.detail($(this));
+    });
   }
 };
 
@@ -51,6 +56,21 @@ Subscribe.action = {
     var url;
     url = $('#url').val();
     return Subscribe.apiClient.request(url);
+  },
+  detail: function(feed) {
+    var feedId, request, title;
+    feedId = feed.attr('id');
+    title = {
+      title: feed.text()
+    };
+    $("#title").html(ich.title_template(title));
+    request = Subscribe.apiClient.details(feedId);
+    request.done(function(data) {
+      return $("#details").html(ich.details_template(data));
+    });
+    return request.fail(function(data) {
+      return console.log('detail fail');
+    });
   }
 };
 
@@ -83,16 +103,16 @@ Subscribe.ReaderApi = (function() {
     this.token = null;
   }
 
-  ReaderApi.prototype.request = function(domain) {
+  ReaderApi.prototype.subscribe = function(domain) {
     var subRequest;
     var _this = this;
-    subRequest = this.subscribe(domain);
+    subRequest = this._subscribe(domain);
     return subRequest.fail(function(data) {
       var login;
       if (400 === data.status) {
         login = _this.login();
         login.done(function() {
-          return subRequest = _this.subscribe(domain);
+          return subRequest = _this._subscribe(domain);
         });
         return login.fail(function() {
           return alert('Couldn’t log in after 2 tries');
@@ -101,11 +121,38 @@ Subscribe.ReaderApi = (function() {
     });
   };
 
-  ReaderApi.prototype.details = function() {
+  ReaderApi.prototype.details = function(feedId) {
+    var dfd, subRequest;
+    var _this = this;
+    dfd = $.Deferred();
+    subRequest = this._details(feedId);
+    subRequest.success(function(data) {
+      return dfd.resolve(data);
+    });
+    subRequest.fail(function(data) {
+      var login;
+      if (400 === data.status) {
+        login = _this.login();
+        login.done(function() {
+          subRequest = _this._details(feedId);
+          return subRequest.success(function(data) {
+            return dfd.resolve(data);
+          });
+        });
+        return login.fail(function() {
+          dfd.reject;
+          return alert('Couldn’t log in after 2 tries');
+        });
+      }
+    });
+    return dfd.promise();
+  };
+
+  ReaderApi.prototype._details = function(feedId) {
     return $.ajax({
       url: "" + this.host + "/reader/api/0/stream/details",
       data: {
-        s: 'feed/http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml',
+        s: feedId,
         tz: '-480',
         fetchTrends: 'false',
         output: 'json',
@@ -116,9 +163,7 @@ Subscribe.ReaderApi = (function() {
       headers: {
         "Authorization": "GoogleLogin auth=" + this.auth
       },
-      success: function(data) {
-        return console.log(data);
-      }
+      success: function(data) {}
     });
   };
 
@@ -152,7 +197,7 @@ Subscribe.ReaderApi = (function() {
     });
   };
 
-  ReaderApi.prototype.subscribe = function(domain) {
+  ReaderApi.prototype._subscribe = function(domain) {
     var queryString;
     queryString = $.param({
       client: "Subscribe/" + Subscribe.version,
