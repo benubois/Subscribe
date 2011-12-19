@@ -22,6 +22,18 @@ Subscribe = {
       return host = 'https://www.google.com';
     }
   },
+  alert: function(message, title, action) {
+    var complete;
+    if (Subscribe.env() === 'device') {
+      console.log('should alert');
+      complete = function() {
+        return console.log('complete');
+      };
+      return navigator.notification.alert(message, complete, title, action);
+    } else {
+      return alert(message);
+    }
+  },
   onDeviceReady: function() {
     return $.each(Subscribe.init, function(i, item) {
       return item();
@@ -31,13 +43,8 @@ Subscribe = {
 
 Subscribe.init = {
   login: function() {
-    var apiClient, login;
-    apiClient = new Subscribe.ReaderApi;
-    login = apiClient.login();
-    return login.done(function() {
-      Subscribe.apiClient = apiClient;
-      return $(document).trigger('subscribeLogin');
-    });
+    var apiClient;
+    return apiClient = new Subscribe.ReaderApi;
   },
   loginDone: function() {
     return $(document).on('subscribeLogin', function() {
@@ -48,8 +55,32 @@ Subscribe.init = {
     $('#jqt').on('tap', '.subscription', function(e) {
       return Subscribe.action.detail($(this));
     });
-    return $('#jqt').on('tap', '.unsubscribe', function(e) {
+    $('#jqt').on('tap', '.unsubscribe', function(e) {
       return Subscribe.action.unsubscribe($(this));
+    });
+    return $('#jqt').on('tap', '#button-login', function(e) {
+      var keychain, password, set, username;
+      username = $('#field-username').val();
+      password = $('#field-password').val();
+      if (username === '' || password === '') {
+        Subscribe.alert('You must enter a username and password', 'Login Error', 'OK');
+        return false;
+      } else {
+        keychain = new Subscribe.Keychain;
+        set = keychain.authSet(username, password);
+        set.done(function(auth) {
+          var get;
+          Subscribe.log('set keychain');
+          get = keychain.authGet();
+          return get.done(function(auth) {
+            Subscribe.authTest = auth;
+            return console.log(auth);
+          });
+        });
+        return set.fail(function() {
+          return Subscribe.log('failed keychain');
+        });
+      }
     });
   }
 };
@@ -82,7 +113,7 @@ Subscribe.action = {
       return Subscribe.action.list();
     });
     return request.fail(function(data) {
-      return alert('subscribe failed');
+      return Subscribe.alert('subscribe failed');
     });
   },
   unsubscribe: function(el) {
@@ -93,7 +124,7 @@ Subscribe.action = {
       return Subscribe.action.removeSubscription(feedId);
     });
     return request.fail(function(data) {
-      return alert('unsubscribe failed');
+      return Subscribe.alert('unsubscribe failed');
     });
   },
   removeSubscription: function(id) {
@@ -130,15 +161,70 @@ Subscribe.load = function() {
   return document.addEventListener("deviceready", Subscribe.onDeviceReady, false);
 };
 
-Subscribe.getLogin = function() {
-  var dfd;
-  dfd = $.Deferred();
-  dfd.resolve({
-    username: 'subscribeapp.testing',
-    password: 'hAMWCY2+Jfb7,q'
-  });
-  return dfd.promise();
-};
+Subscribe.Keychain = (function() {
+
+  function Keychain() {}
+
+  Keychain.prototype.authSet = function(username, password) {
+    var auth, dfd, set, string;
+    dfd = $.Deferred();
+    auth = {
+      username: username,
+      password: password
+    };
+    string = JSON.stringify(auth);
+    set = this.set('auth', string);
+    set.done(function(data) {
+      console.log(data);
+      return dfd.resolve(data);
+    });
+    return dfd.promise();
+  };
+
+  Keychain.prototype.authGet = function() {
+    var dfd, get;
+    dfd = $.Deferred();
+    get = this.get('auth');
+    get.done(function(data) {
+      return dfd.resolve(JSON.parse(data));
+    });
+    get.fail(function() {
+      return dfd.reject('error');
+    });
+    return dfd.promise();
+  };
+
+  Keychain.prototype.set = function(key, value) {
+    var dfd, fail, success;
+    dfd = $.Deferred();
+    success = function(key) {
+      return dfd.resolve(key);
+    };
+    fail = function(key, error) {
+      return dfd.reject(error);
+    };
+    window.plugins.keychain.setForKey(key, value, 'com.benubois.Subscribe', success, fail);
+    return dfd.promise();
+  };
+
+  Keychain.prototype.get = function(key) {
+    var dfd, fail, success;
+    dfd = $.Deferred();
+    success = function(key, value) {
+      console.log('error');
+      console.log(error);
+      return dfd.resolve(value);
+    };
+    fail = function(key, error) {
+      return dfd.reject(error);
+    };
+    window.plugins.keychain.getForKey(key, 'com.benubois.Subscribe', success, fail);
+    return dfd.promise();
+  };
+
+  return Keychain;
+
+})();
 
 Subscribe.ReaderApi = (function() {
 
@@ -330,11 +416,15 @@ Subscribe.ReaderApi = (function() {
   };
 
   ReaderApi.prototype.getAuth = function(username, password) {
+    var queryString;
     var _this = this;
+    queryString = $.param({
+      service: "reader"
+    });
     return $.ajax({
-      url: "" + this.host + "/accounts/ClientLogin",
+      type: "POST",
+      url: "" + this.host + "/accounts/ClientLogin?" + queryString,
       data: {
-        "service": "reader",
         "Email": username,
         "Passwd": password
       },

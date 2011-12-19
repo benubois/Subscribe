@@ -53,6 +53,8 @@
 		<string>PGCapture</string>
 		<key>com.phonegap.splashscreen</key>
 		<string>PGSplashScreen</string>
+		<key>SAiOSKeychainPlugin</key>
+		<string>SAiOSKeychainPlugin</string>
 	</dict>
 </dict>
 </plist>

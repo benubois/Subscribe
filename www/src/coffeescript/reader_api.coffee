@@ -175,10 +175,14 @@ class Subscribe.ReaderApi
     dfd.promise()
 
   getAuth: (username, password) ->
+    
+    queryString = $.param
+      service: "reader"
+    
     $.ajax
-      url: "#{@host}/accounts/ClientLogin"
+      type: "POST"
+      url: "#{@host}/accounts/ClientLogin?#{queryString}"
       data:
-        "service": "reader"
         "Email": username
         "Passwd": password
       success: (data) =>

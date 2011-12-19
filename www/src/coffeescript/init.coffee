@@ -1,13 +1,13 @@
 Subscribe.init =
   login: ->
     apiClient = new Subscribe.ReaderApi
-    login = apiClient.login()
-    login.done () ->
-      # Set up the client for the rest of the api to use
-      Subscribe.apiClient = apiClient
-      
-      # Publish event other stuff can subscribe to
-      $(document).trigger 'subscribeLogin';
+    # login = apiClient.login()
+    # login.done () ->
+    #   # Set up the client for the rest of the api to use
+    #   Subscribe.apiClient = apiClient
+    #   
+    #   # Publish event other stuff can subscribe to
+    #   $(document).trigger 'subscribeLogin';
   loginDone: ->
     $(document).on 'subscribeLogin', ->
       Subscribe.action.list()
@@ -19,6 +19,29 @@ Subscribe.init =
     # Unsubscribe
     $('#jqt').on 'tap', '.unsubscribe', (e) ->
       Subscribe.action.unsubscribe($(this))
+
+    # Login
+    $('#jqt').on 'tap', '#button-login', (e) ->
+      username = $('#field-username').val();
+      password = $('#field-password').val();
+      
+      if username is '' || password is ''
+        Subscribe.alert('You must enter a username and password', 'Login Error', 'OK')
+        return false
+      else
+        keychain = new Subscribe.Keychain
+        set = keychain.authSet username, password
+
+        set.done (auth) ->
+          Subscribe.log 'set keychain'
+          get = keychain.authGet()
+          
+          get.done (auth) -> 
+            Subscribe.authTest = auth
+            console.log auth
+          
+        set.fail ->
+          Subscribe.log 'failed keychain'
 
 Subscribe.action =
   list: ->
@@ -49,7 +72,7 @@ Subscribe.action =
     # unsubscribe request failed
     # TODO add error info
     request.fail (data) ->
-      alert('subscribe failed')
+      Subscribe.alert('subscribe failed')
 
   unsubscribe: (el) ->
     feedId = el.data('feed-id')
@@ -62,7 +85,7 @@ Subscribe.action =
     # unsubscribe request failed
     # TODO add error info
     request.fail (data) ->
-      alert('unsubscribe failed')
+      Subscribe.alert('unsubscribe failed')
   
   removeSubscription: (id) ->
     $('#subscriptions').find('li a').each ->
@@ -89,8 +112,7 @@ Subscribe.action =
     # Detail request failed
     # TODO add error info
     request.fail (data) ->
-      console.log 'detail fail'
-    
+      console.log 'detail fail'    
 
 Subscribe.load =->
   if 'browser' is Subscribe.env()

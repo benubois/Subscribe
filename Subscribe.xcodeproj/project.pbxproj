@@ -36,6 +36,8 @@
 		B571E52914847C4500935F45 /* www in Resources */ = {isa = PBXBuildFile; fileRef = B571E52814847C4500935F45 /* www */; };
 		B5B3DB791498942000681412 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B5B3DB781498942000681412 /* Default.png */; };
 		B5B3DB7B1498942600681412 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B5B3DB7A1498942600681412 /* Default@2x.png */; };
+		B5BEC782149F01B1008482B0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5BEC781149F01B1008482B0 /* Security.framework */; };
+		B5BEC78B149F0AA2008482B0 /* SAiOSKeychainPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = B5BEC78A149F0AA2008482B0 /* SAiOSKeychainPlugin.m */; };
 		B5F35EA314989BE100B4550A /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B5F35EA214989BE100B4550A /* icon.png */; };
 		B5F35EA514989C7600B4550A /* icon_small.png in Resources */ = {isa = PBXBuildFile; fileRef = B5F35EA414989C7600B4550A /* icon_small.png */; };
 /* End PBXBuildFile section */
@@ -75,6 +77,9 @@
 		B571E52814847C4500935F45 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		B5B3DB781498942000681412 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		B5B3DB7A1498942600681412 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		B5BEC781149F01B1008482B0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		B5BEC789149F0AA2008482B0 /* SAiOSKeychainPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAiOSKeychainPlugin.h; sourceTree = "<group>"; };
+		B5BEC78A149F0AA2008482B0 /* SAiOSKeychainPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAiOSKeychainPlugin.m; sourceTree = "<group>"; };
 		B5F35EA214989BE100B4550A /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		B5F35EA414989C7600B4550A /* icon_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_small.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5BEC782149F01B1008482B0 /* Security.framework in Frameworks */,
 				B571E4E014847B9700935F45 /* Foundation.framework in Frameworks */,
 				B571E4E214847B9700935F45 /* UIKit.framework in Frameworks */,
 				B571E4E414847B9700935F45 /* CoreGraphics.framework in Frameworks */,
@@ -114,6 +120,7 @@
 		B571E4CD14847B9700935F45 = {
 			isa = PBXGroup;
 			children = (
+				B5BEC781149F01B1008482B0 /* Security.framework */,
 				B5F35EA414989C7600B4550A /* icon_small.png */,
 				B5F35EA214989BE100B4550A /* icon.png */,
 				B5B3DB7A1498942600681412 /* Default@2x.png */,
@@ -236,6 +243,8 @@
 		B571E52114847B9700935F45 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				B5BEC789149F0AA2008482B0 /* SAiOSKeychainPlugin.h */,
+				B5BEC78A149F0AA2008482B0 /* SAiOSKeychainPlugin.m */,
 				B571E52214847B9700935F45 /* README */,
 			);
 			name = Plugins;
@@ -335,6 +344,7 @@
 			files = (
 				B571E50014847B9700935F45 /* main.m in Sources */,
 				B571E52014847B9700935F45 /* AppDelegate.m in Sources */,
+				B5BEC78B149F0AA2008482B0 /* SAiOSKeychainPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
