@@ -41,31 +41,76 @@ Subscribe.init = {
   },
   loginDone: function() {
     return $(document).on('subscribeLogin', function() {
-      return Subscribe.apiClient.list();
+      return Subscribe.action.list();
     });
   },
-  subscriptionTouch: function() {
-    return $('#jqt').on('tap', '.subscription', function(e) {
+  buttons: function() {
+    $('#jqt').on('tap', '.subscription', function(e) {
       return Subscribe.action.detail($(this));
+    });
+    return $('#jqt').on('tap', '.unsubscribe', function(e) {
+      return Subscribe.action.unsubscribe($(this));
     });
   }
 };
 
 Subscribe.action = {
-  subscribe: function() {
-    var url;
-    url = $('#url').val();
-    return Subscribe.apiClient.request(url);
+  list: function() {
+    var request;
+    request = Subscribe.apiClient.list();
+    request.done(function(data) {
+      var content;
+      if (0 === data.subscriptions.length) {
+        data.condition_no_subscriptions = true;
+        data.condition_has_subscriptions = false;
+      } else {
+        data.condition_no_subscriptions = false;
+        data.condition_has_subscriptions = true;
+      }
+      content = ich.subscriptions_list(data);
+      return $("#subscriptions").html(content);
+    });
+    return request.fail(function(data) {
+      return console.log(data);
+    });
   },
-  detail: function(feed) {
+  subscribe: function() {
+    var request, url;
+    url = $('#url').val();
+    request = Subscribe.apiClient.subscribe(url);
+    request.done(function(data) {
+      return Subscribe.action.list();
+    });
+    return request.fail(function(data) {
+      return alert('subscribe failed');
+    });
+  },
+  unsubscribe: function(el) {
+    var feedId, request;
+    feedId = el.data('feed-id');
+    request = Subscribe.apiClient.unsubscribe(feedId);
+    request.done(function(data) {
+      return Subscribe.action.removeSubscription(feedId);
+    });
+    return request.fail(function(data) {
+      return alert('unsubscribe failed');
+    });
+  },
+  removeSubscription: function(id) {
+    return $('#subscriptions').find('li a').each(function() {
+      if ($(this).data('feed-id') === id) return $(this).parents('li').remove();
+    });
+  },
+  detail: function(el) {
     var feedId, request, title;
-    feedId = feed.attr('id');
+    feedId = el.data('feed-id');
     title = {
-      title: feed.text()
+      title: el.text()
     };
     $("#title").html(ich.title_template(title));
     request = Subscribe.apiClient.details(feedId);
     request.done(function(data) {
+      data.id = feedId;
       return $("#details").html(ich.details_template(data));
     });
     return request.fail(function(data) {
@@ -104,21 +149,38 @@ Subscribe.ReaderApi = (function() {
   }
 
   ReaderApi.prototype.subscribe = function(domain) {
-    var subRequest;
+    var dfd, subRequest;
     var _this = this;
+    dfd = $.Deferred();
     subRequest = this._subscribe(domain);
-    return subRequest.fail(function(data) {
+    subRequest.success(function(data) {
+      if (data.streamId != null) {
+        return dfd.resolve(data);
+      } else {
+        return dfd.reject('invalid feed');
+      }
+    });
+    subRequest.fail(function(data) {
       var login;
       if (400 === data.status) {
         login = _this.login();
         login.done(function() {
-          return subRequest = _this._subscribe(domain);
+          subRequest = _this._subscribe(domain);
+          return subRequest.success(function(data) {
+            if (data.streamId != null) {
+              return dfd.resolve(data);
+            } else {
+              return dfd.reject('invalid feed');
+            }
+          });
         });
         return login.fail(function() {
+          dfd.reject;
           return alert('Couldn’t log in after 2 tries');
         });
       }
     });
+    return dfd.promise();
   };
 
   ReaderApi.prototype.details = function(feedId) {
@@ -135,6 +197,33 @@ Subscribe.ReaderApi = (function() {
         login = _this.login();
         login.done(function() {
           subRequest = _this._details(feedId);
+          return subRequest.success(function(data) {
+            return dfd.resolve(data);
+          });
+        });
+        return login.fail(function() {
+          dfd.reject;
+          return alert('Couldn’t log in after 2 tries');
+        });
+      }
+    });
+    return dfd.promise();
+  };
+
+  ReaderApi.prototype.unsubscribe = function(feedId) {
+    var dfd, subRequest;
+    var _this = this;
+    dfd = $.Deferred();
+    subRequest = this._unsubscribe(feedId);
+    subRequest.success(function(data) {
+      return dfd.resolve(data);
+    });
+    subRequest.fail(function(data) {
+      var login;
+      if (400 === data.status) {
+        login = _this.login();
+        login.done(function() {
+          subRequest = _this._unsubscribe(feedId);
           return subRequest.success(function(data) {
             return dfd.resolve(data);
           });
@@ -178,21 +267,6 @@ Subscribe.ReaderApi = (function() {
       dataType: 'json',
       headers: {
         "Authorization": "GoogleLogin auth=" + this.auth
-      },
-      success: function(data) {
-        var content;
-        if (0 === data.subscriptions.length) {
-          data.condition_no_subscriptions = true;
-          data.condition_has_subscriptions = false;
-        } else {
-          data.condition_no_subscriptions = false;
-          data.condition_has_subscriptions = true;
-        }
-        content = ich.subscriptions_list(data);
-        return $("#subscriptions").html(content);
-      },
-      error: function(data) {
-        return console.log(data);
       }
     });
   };
@@ -213,14 +287,25 @@ Subscribe.ReaderApi = (function() {
         "Content-Length": '0',
         "Authorization": "GoogleLogin auth=" + this.auth,
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-      },
-      success: function(data) {
-        console.log(data);
-        if (data.streamId != null) {
-          return alert('subscription success');
-        } else {
-          return console.log('no subscription');
-        }
+      }
+    });
+  };
+
+  ReaderApi.prototype._unsubscribe = function(id) {
+    var queryString;
+    queryString = $.param({
+      client: "Subscribe/" + Subscribe.version,
+      s: id,
+      ac: 'unsubscribe',
+      T: this.token
+    });
+    return $.ajax({
+      type: "POST",
+      url: "" + this.host + "/reader/api/0/subscription/edit?" + queryString,
+      headers: {
+        "Content-Length": '0',
+        "Authorization": "GoogleLogin auth=" + this.auth,
+        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
       }
     });
   };

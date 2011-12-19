@@ -15,7 +15,14 @@
 
 #jqt .redButton {
     -webkit-border-image: url(../images/redButton.png) 0 24 0 24;
-	background-size: 29px 46px;
+	background-size: 35px 44px;
+    color: #FFFFFF;
+}
+
+#jqt .redButton.active,
+#jqt .redButton:active {
+    -webkit-border-image: url(../images/redButtonTouch.png) 0 24 0 24;
+	background-size: 35px 44px;
     color: #FFFFFF;
 }
 
@@ -32,4 +39,34 @@
 	background-size: 16px 29px;
     -webkit-border-image: url(../images/toolButtonTouch.png) 0 10 0 10;	
 }
+#jqt #details li {
+	position: relative;
+}
+#jqt li span.label {
+	top: 0;
+	position: absolute;
+	display: block;
+	color: #516691;
+	width: 80px;
+	float: left;
+	text-align: right;
+	font-size: 12px;
+	padding-top: 14px;
+}
 
+#jqt li span.label-info {
+	color: #000;
+	padding-left: 90px;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+}
+
+#jqt ul li.arrow {
+    background-image: url(../images/arrow.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+	background-size: 26px 13px;
+}

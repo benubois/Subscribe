@@ -17,7 +17,9 @@
             'src/images/backButtonTouch.png',
             'src/images/toolButtonTouch.png',
             'src/images/toolbar.png',
-            'src/images/activeButton.png'
+            'src/images/activeButton.png',
+            'src/images/redButton.png',
+            'src/images/redButtonTouch.png'
          ]
     });
 	</script>
@@ -57,23 +59,17 @@
 				<h1>Subscribe</h1>
 				<a class="button slideup add" href="#add">+</a>
 			</div>
-			<div id="subscriptions"></div>
+			<ul class="edgetoedge view" id="subscriptions"></ul>
 			
 			<script id="subscriptions_list" type="text/html">
 			{{#condition_no_subscriptions}}
-			<div class="view">
-                <ul class="rounded">
-                    <li>No subscriptions. Subscribe!</li>
-                </ul>
-            </div>
+                <li>No subscriptions. Subscribe!</li>
 			{{/condition_no_subscriptions}}
 
 			{{#condition_has_subscriptions}}
-			<ul class="edgetoedge view">
 				{{#subscriptions}}
-					<li class="arrow"><a href="#detail" id="{{ id }}" class="subscription">{{ title }}</a></li>
+					<li class="arrow"><a href="#detail" data-feed-id="{{ id }}" id="{{ index }}" class="subscription">{{ title }}</a></li>
 				{{/subscriptions}}
-			</ul>
 			{{/condition_has_subscriptions}}
 			</script>
 		</div>
@@ -98,11 +94,14 @@
 		        <a class="back" href="#">Feeds</a>
 		    </div>
 			<script id="details_template" type="text/html">
-				<li>Feed URL: {{ feedUrl }}</li>
-				<li>Subscribers: {{ subscribers }}</li>
-			</script>
-		    <ul class="rounded" id="details">
+		    <ul class="rounded">
+				<li><span class="label">Feed URL</span> <span class="label-info">{{ feedUrl }}</span></li>
+				<li><span class="label">Subscribers</span> <span class="label-info">{{ subscribers }}</span></li>
 		    </ul>
+			<a class="redButton unsubscribe goback" data-feed-id="{{ id }}" href="#home">Unsubscribe</a>
+			</script>
+			<div class="view" id="details">				
+			</div>
 		</div>
 	</div>
 </body>
