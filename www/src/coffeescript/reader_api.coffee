@@ -5,16 +5,38 @@ class Subscribe.ReaderApi
     @token = null
 
   subscribe: (domain) ->
-    subRequest = @_subscribe domain
+    dfd = $.Deferred()
+    
+    subRequest = @_subscribe (domain)
+    
+    subRequest.success (data) ->
+      if data.streamId?
+        # get details successful, resolve with info
+        dfd.resolve data
+      else
+        # Update alert contents with unsuccessful request info
+        dfd.reject 'invalid feed'
+    
     subRequest.fail (data) =>
       if 400 is data.status
 
         # If token is invalid, get a new one and try again
         login = @login()
         login.done () =>
-          subRequest = @_subscribe domain
+          subRequest = @_subscribe (domain)
+          
+          subRequest.success (data) ->
+            if data.streamId?
+              # get details successful, resolve with info
+              dfd.resolve data
+            else
+              # Update alert contents with unsuccessful request info
+              dfd.reject 'invalid feed'
         login.fail () ->
+          dfd.reject
           alert 'Couldn’t log in after 2 tries'
+    
+    dfd.promise()
   
   details: (feedId) ->
     dfd = $.Deferred()
@@ -32,6 +54,32 @@ class Subscribe.ReaderApi
         login = @login()
         login.done () =>
           subRequest = @_details (feedId)
+          
+          subRequest.success (data) ->
+            # get details successful, resolve with info
+            dfd.resolve data
+        login.fail () ->
+          dfd.reject
+          alert 'Couldn’t log in after 2 tries'
+    
+    dfd.promise()
+  
+  unsubscribe: (feedId) ->
+    dfd = $.Deferred()
+    
+    subRequest = @_unsubscribe (feedId)
+    
+    subRequest.success (data) ->
+      # get details successful, resolve with info
+      dfd.resolve data
+    
+    subRequest.fail (data) =>
+      if 400 is data.status
+
+        # If token is invalid, get a new one and try again
+        login = @login()
+        login.done () =>
+          subRequest = @_unsubscribe (feedId)
           
           subRequest.success (data) ->
             # get details successful, resolve with info
@@ -69,18 +117,6 @@ class Subscribe.ReaderApi
       dataType: 'json'
       headers:
         "Authorization": "GoogleLogin auth=#{@auth}"
-      success: (data) ->
-        if 0 is data.subscriptions.length
-          data.condition_no_subscriptions = true
-          data.condition_has_subscriptions = false
-        else
-          data.condition_no_subscriptions = false
-          data.condition_has_subscriptions = true
-
-        content = ich.subscriptions_list(data)
-        $("#subscriptions").html content  
-      error: (data) ->
-        console.log data  
   
   _subscribe: (domain) ->
     
@@ -98,14 +134,22 @@ class Subscribe.ReaderApi
         "Content-Length": '0'
         "Authorization": "GoogleLogin auth=#{@auth}"
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-      success: (data) ->
-        console.log data
-        if data.streamId?
-          # Subscription was successful, remove the alert
-          alert 'subscription success'
-        else
-          # Update alert contents with unsuccessful request info
-          console.log 'no subscription'
+  
+  _unsubscribe: (id) ->
+    
+    queryString = $.param
+      client: "Subscribe/#{Subscribe.version}"
+      s: id
+      ac: 'unsubscribe'
+      T: @token
+
+    $.ajax
+      type: "POST"
+      url: "#{@host}/reader/api/0/subscription/edit?#{queryString}"
+      headers:
+        "Content-Length": '0'
+        "Authorization": "GoogleLogin auth=#{@auth}"
+        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
   
   # PRIVATE METHODS
   login: () ->
