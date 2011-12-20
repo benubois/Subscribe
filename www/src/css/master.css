@@ -70,3 +70,10 @@
     background-repeat: no-repeat;
 	background-size: 26px 13px;
 }
+
+#placeholder {
+	background-image: url(../images/placeholder.png);
+    background-position: 0 -20px;
+    background-repeat: no-repeat;
+	background-size: 320px 480px;
+}

@@ -1,8 +1,11 @@
 Subscribe =
   version: '1.0.0'
+  debugMode: true
+  debug: (message) ->
+    Subscribe.log message if Subscribe.debugMode
   log: ->
-    window.logHistory = window.logHistory || []
-    window.logHistory.push(arguments)
+    window.Subscribe.logHistory = window.Subscribe.logHistory || []
+    window.Subscribe.logHistory.push(arguments)
     if window.console
       console.log( Array.prototype.slice.call(arguments) )
   env: ->

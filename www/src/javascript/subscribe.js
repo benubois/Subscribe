@@ -2,9 +2,13 @@ var Subscribe;
 
 Subscribe = {
   version: '1.0.0',
+  debugMode: true,
+  debug: function(message) {
+    if (Subscribe.debugMode) return Subscribe.log(message);
+  },
   log: function() {
-    window.logHistory = window.logHistory || [];
-    window.logHistory.push(arguments);
+    window.Subscribe.logHistory = window.Subscribe.logHistory || [];
+    window.Subscribe.logHistory.push(arguments);
     if (window.console) return console.log(Array.prototype.slice.call(arguments));
   },
   env: function() {
@@ -42,9 +46,20 @@ Subscribe = {
 };
 
 Subscribe.init = {
-  login: function() {
-    var apiClient;
-    return apiClient = new Subscribe.ReaderApi;
+  auth: function() {
+    var get, keychain;
+    Subscribe.log('init: get auth');
+    keychain = new Subscribe.Keychain;
+    get = keychain.authGet();
+    get.done(function(auth) {
+      Subscribe.log("init: get auth done auth:", auth);
+      Subscribe.log(jQT);
+      return jQT.goTo('#home');
+    });
+    return get.fail(function() {
+      Subscribe.log("init: get auth failed");
+      return jQT.goTo('#login');
+    });
   },
   loginDone: function() {
     return $(document).on('subscribeLogin', function() {
@@ -55,27 +70,26 @@ Subscribe.init = {
     $('#jqt').on('tap', '.subscription', function(e) {
       return Subscribe.action.detail($(this));
     });
-    $('#jqt').on('tap', '.unsubscribe', function(e) {
+    return $('#jqt').on('tap', '.unsubscribe', function(e) {
       return Subscribe.action.unsubscribe($(this));
     });
+  },
+  login: function() {
     return $('#jqt').on('tap', '#button-login', function(e) {
       var keychain, password, set, username;
+      Subscribe.debug("init: login tap");
       username = $('#field-username').val();
       password = $('#field-password').val();
       if (username === '' || password === '') {
+        Subscribe.debug("init: username and password validation failed");
         Subscribe.alert('You must enter a username and password', 'Login Error', 'OK');
         return false;
       } else {
+        Subscribe.debug("init: Saving password to keychain");
         keychain = new Subscribe.Keychain;
         set = keychain.authSet(username, password);
         set.done(function(auth) {
-          var get;
-          Subscribe.log('set keychain');
-          get = keychain.authGet();
-          return get.done(function(auth) {
-            Subscribe.authTest = auth;
-            return console.log(auth);
-          });
+          return Subscribe.debug("init: set done auth: " + auth);
         });
         return set.fail(function() {
           return Subscribe.log('failed keychain');
@@ -103,6 +117,15 @@ Subscribe.action = {
     });
     return request.fail(function(data) {
       return console.log(data);
+    });
+  },
+  login: function() {
+    var apiClient, login;
+    apiClient = new Subscribe.ReaderApi;
+    login = apiClient.login();
+    return login.done(function() {
+      Subscribe.apiClient = apiClient;
+      return $(document).trigger('subscribeLogin');
     });
   },
   subscribe: function() {
@@ -152,13 +175,12 @@ Subscribe.action = {
 
 Subscribe.load = function() {
   if ('browser' === Subscribe.env()) {
-    $(document).ready(function() {
+    return $(document).ready(function() {
       return Subscribe.onDeviceReady();
     });
   } else {
-
+    return document.addEventListener("deviceready", Subscribe.onDeviceReady, false);
   }
-  return document.addEventListener("deviceready", Subscribe.onDeviceReady, false);
 };
 
 Subscribe.Keychain = (function() {
@@ -167,6 +189,7 @@ Subscribe.Keychain = (function() {
 
   Keychain.prototype.authSet = function(username, password) {
     var auth, dfd, set, string;
+    Subscribe.debug("Keychain: Setting username: " + username + " and password: " + password);
     dfd = $.Deferred();
     auth = {
       username: username,
@@ -175,7 +198,7 @@ Subscribe.Keychain = (function() {
     string = JSON.stringify(auth);
     set = this.set('auth', string);
     set.done(function(data) {
-      console.log(data);
+      Subscribe.debug("Keychain: authSet done data: " + data);
       return dfd.resolve(data);
     });
     return dfd.promise();
@@ -183,42 +206,62 @@ Subscribe.Keychain = (function() {
 
   Keychain.prototype.authGet = function() {
     var dfd, get;
+    Subscribe.debug("Keychain: authGet called");
     dfd = $.Deferred();
     get = this.get('auth');
     get.done(function(data) {
+      Subscribe.debug("Keychain: authGet done data: " + data);
       return dfd.resolve(JSON.parse(data));
     });
     get.fail(function() {
-      return dfd.reject('error');
+      Subscribe.debug("Keychain: authGet fail");
+      return dfd.reject();
     });
     return dfd.promise();
   };
 
   Keychain.prototype.set = function(key, value) {
-    var dfd, fail, success;
+    var callback, dfd, fail, success;
     dfd = $.Deferred();
     success = function(key) {
+      Subscribe.debug("Keychain: set success key: " + key);
       return dfd.resolve(key);
     };
-    fail = function(key, error) {
-      return dfd.reject(error);
+    fail = function() {
+      Subscribe.debug("Keychain: set fail");
+      return dfd.reject();
     };
-    window.plugins.keychain.setForKey(key, value, 'com.benubois.Subscribe', success, fail);
+    if (Subscribe.env() === 'device') {
+      window.plugins.keychain.setForKey(key, value, 'com.benubois.Subscribe', success, fail);
+    } else {
+      callback = function() {
+        return success(key);
+      };
+      setTimeout(callback, 10);
+    }
     return dfd.promise();
   };
 
   Keychain.prototype.get = function(key) {
-    var dfd, fail, success;
+    var callback, dfd, fail, success;
+    Subscribe.debug("Keychain: get called key " + key);
     dfd = $.Deferred();
     success = function(key, value) {
-      console.log('error');
-      console.log(error);
+      Subscribe.debug("Keychain: get success key: " + key);
       return dfd.resolve(value);
     };
-    fail = function(key, error) {
-      return dfd.reject(error);
+    fail = function() {
+      Subscribe.debug("Keychain: get fail");
+      return dfd.reject();
     };
-    window.plugins.keychain.getForKey(key, 'com.benubois.Subscribe', success, fail);
+    if (Subscribe.env() === 'device') {
+      window.plugins.keychain.getForKey(key, 'com.benubois.Subscribe', success, fail);
+    } else {
+      callback = function() {
+        return success('auth', '{"username":"subscribeapp.testing","password":"hAMWCY2+Jfb7,q"}');
+      };
+      setTimeout(callback, 10);
+    }
     return dfd.promise();
   };
 
