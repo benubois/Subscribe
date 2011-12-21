@@ -318,8 +318,8 @@ Subscribe.ReaderApi = (function() {
   }
 
   ReaderApi.prototype.subscribe = function(domain) {
-    var dfd, subRequest;
-    var _this = this;
+    var dfd, subRequest,
+      _this = this;
     dfd = $.Deferred();
     subRequest = this._subscribe(domain);
     subRequest.success(function(data) {
@@ -353,8 +353,8 @@ Subscribe.ReaderApi = (function() {
   };
 
   ReaderApi.prototype.details = function(feedId) {
-    var dfd, subRequest;
-    var _this = this;
+    var dfd, subRequest,
+      _this = this;
     dfd = $.Deferred();
     subRequest = this._details(feedId);
     subRequest.success(function(data) {
@@ -380,8 +380,8 @@ Subscribe.ReaderApi = (function() {
   };
 
   ReaderApi.prototype.unsubscribe = function(feedId) {
-    var dfd, subRequest;
-    var _this = this;
+    var dfd, subRequest,
+      _this = this;
     dfd = $.Deferred();
     subRequest = this._unsubscribe(feedId);
     subRequest.success(function(data) {
@@ -480,8 +480,8 @@ Subscribe.ReaderApi = (function() {
   };
 
   ReaderApi.prototype.login = function() {
-    var credentials, dfd;
-    var _this = this;
+    var credentials, dfd,
+      _this = this;
     dfd = $.Deferred();
     credentials = Subscribe.KeychainInst.authGet();
     credentials.done(function(login) {
@@ -499,8 +499,8 @@ Subscribe.ReaderApi = (function() {
   };
 
   ReaderApi.prototype.getAuth = function(username, password) {
-    var queryString;
-    var _this = this;
+    var queryString,
+      _this = this;
     queryString = $.param({
       service: "reader"
     });
