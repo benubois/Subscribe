@@ -1,4 +1,5 @@
 Subscribe =
+  googleLogin: null
   version: '1.0.0'
   debugMode: true
   debug: (message) ->
@@ -21,11 +22,12 @@ Subscribe =
   alert: (message, title, action) ->
       if Subscribe.env() is 'device'
         console.log 'should alert'
-        complete = ->
+        callback = ->
           console.log 'complete'
-        navigator.notification.alert message, complete, title, action
+        navigator.notification.alert message, callback, title, action
       else
         alert message
   onDeviceReady: ->
+    Subscribe.log 'Subscribe: onDeviceReady'
     $.each Subscribe.init, (i, item) -> 
       item();

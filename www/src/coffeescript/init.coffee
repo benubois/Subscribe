@@ -1,11 +1,14 @@
 Subscribe.init =
+  keychain: ->
+    # Instantiate keychain
+    Subscribe.KeychainInst = new Subscribe.Keychain
   auth: ->
     Subscribe.log 'init: get auth'
-    keychain = new Subscribe.Keychain
-    get = keychain.authGet()
+    get = Subscribe.KeychainInst.authGet()
     get.done (auth) -> 
       Subscribe.log "init: get auth done auth:", auth
-      Subscribe.log jQT
+      Subscribe.googleLogin = auth
+      Subscribe.action.login();
       jQT.goTo '#home'
     get.fail -> 
       Subscribe.log "init: get auth failed"
@@ -13,6 +16,7 @@ Subscribe.init =
 
   loginDone: ->
     $(document).on 'subscribeLogin', ->
+      Subscribe.log 'Subscribe.init: loginDone'
       Subscribe.action.list()
 
   buttons: ->
@@ -34,17 +38,37 @@ Subscribe.init =
         Subscribe.alert('You must enter a username and password', 'Login Error', 'OK')
         return false
       else
-        Subscribe.debug "init: Saving password to keychain"
-        keychain = new Subscribe.Keychain
-        set = keychain.authSet username, password
-        set.done (auth) ->
-          Subscribe.debug "init: set done auth: #{auth}"
-        set.fail ->
-          Subscribe.log 'failed keychain'
+        Subscribe.debug "login: username and password given, trying login"
+        Subscribe.googleLogin = 
+          username: username
+          password: password
+        apiClient = new Subscribe.ReaderApi
+        login = apiClient.login()
+        login.done () ->
+          Subscribe.log 'login: login successful'
+          Subscribe.action.savePassword(username, password)
+          # Set up the client for the rest of the api to use
+          Subscribe.ReaderApiInst = apiClient
+          # Publish event other stuff can subscribe to
+          $(document).trigger 'subscribeLogin';
+          jQT.goTo '#home'
+        login.fail () ->
+          Subscribe.alert('Invalid username or password', 'Login Error', 'OK')
+      
 
 Subscribe.action =
+  savePassword: (username, password) ->
+    Subscribe.debug "init: Saving password to keychain"
+    keychain = new Subscribe.Keychain
+    set = keychain.authSet username, password
+    set.done (auth) ->
+      Subscribe.debug "init: set done auth: #{auth}"
+    set.fail ->
+      Subscribe.log 'failed keychain'
+    
   list: ->
-    request = Subscribe.apiClient.list()
+    Subscribe.log 'Subscribe.action: list'
+    request = Subscribe.ReaderApiInst.list()
     request.done (data) ->
       if 0 is data.subscriptions.length
         data.condition_no_subscriptions = true
@@ -58,17 +82,19 @@ Subscribe.action =
       console.log data  
 
   login: ->
+    Subscribe.log 'Subscribe.action: login'
     apiClient = new Subscribe.ReaderApi
     login = apiClient.login()
     login.done () ->
+      Subscribe.log 'Subscribe.action: login done'
       # Set up the client for the rest of the api to use
-      Subscribe.apiClient = apiClient
+      Subscribe.ReaderApiInst = apiClient
       # Publish event other stuff can subscribe to
       $(document).trigger 'subscribeLogin';
 
   subscribe: ->
     url = $('#url').val()
-    request = Subscribe.apiClient.subscribe(url)
+    request = Subscribe.ReaderApiInst.subscribe(url)
     # Request succeeded, add data to detail template
     request.done (data) ->
       # Update the list
@@ -80,7 +106,7 @@ Subscribe.action =
 
   unsubscribe: (el) ->
     feedId = el.data('feed-id')
-    request = Subscribe.apiClient.unsubscribe(feedId)
+    request = Subscribe.ReaderApiInst.unsubscribe(feedId)
     # Request succeeded, add data to detail template
     request.done (data) ->
       Subscribe.action.removeSubscription feedId 
@@ -102,7 +128,7 @@ Subscribe.action =
     # Add title to detail template
     $("#title").html ich.title_template(title)  
     # Get feed details
-    request = Subscribe.apiClient.details(feedId)
+    request = Subscribe.ReaderApiInst.details(feedId)
     # Request succeeded, add data to detail template
     request.done (data) ->
       data.id = feedId

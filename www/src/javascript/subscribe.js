@@ -1,6 +1,7 @@
 var Subscribe;
 
 Subscribe = {
+  googleLogin: null,
   version: '1.0.0',
   debugMode: true,
   debug: function(message) {
@@ -27,18 +28,19 @@ Subscribe = {
     }
   },
   alert: function(message, title, action) {
-    var complete;
+    var callback;
     if (Subscribe.env() === 'device') {
       console.log('should alert');
-      complete = function() {
+      callback = function() {
         return console.log('complete');
       };
-      return navigator.notification.alert(message, complete, title, action);
+      return navigator.notification.alert(message, callback, title, action);
     } else {
       return alert(message);
     }
   },
   onDeviceReady: function() {
+    Subscribe.log('Subscribe: onDeviceReady');
     return $.each(Subscribe.init, function(i, item) {
       return item();
     });
@@ -46,14 +48,17 @@ Subscribe = {
 };
 
 Subscribe.init = {
+  keychain: function() {
+    return Subscribe.KeychainInst = new Subscribe.Keychain;
+  },
   auth: function() {
-    var get, keychain;
+    var get;
     Subscribe.log('init: get auth');
-    keychain = new Subscribe.Keychain;
-    get = keychain.authGet();
+    get = Subscribe.KeychainInst.authGet();
     get.done(function(auth) {
       Subscribe.log("init: get auth done auth:", auth);
-      Subscribe.log(jQT);
+      Subscribe.googleLogin = auth;
+      Subscribe.action.login();
       return jQT.goTo('#home');
     });
     return get.fail(function() {
@@ -63,6 +68,7 @@ Subscribe.init = {
   },
   loginDone: function() {
     return $(document).on('subscribeLogin', function() {
+      Subscribe.log('Subscribe.init: loginDone');
       return Subscribe.action.list();
     });
   },
@@ -76,7 +82,7 @@ Subscribe.init = {
   },
   login: function() {
     return $('#jqt').on('tap', '#button-login', function(e) {
-      var keychain, password, set, username;
+      var apiClient, login, password, username;
       Subscribe.debug("init: login tap");
       username = $('#field-username').val();
       password = $('#field-password').val();
@@ -85,14 +91,22 @@ Subscribe.init = {
         Subscribe.alert('You must enter a username and password', 'Login Error', 'OK');
         return false;
       } else {
-        Subscribe.debug("init: Saving password to keychain");
-        keychain = new Subscribe.Keychain;
-        set = keychain.authSet(username, password);
-        set.done(function(auth) {
-          return Subscribe.debug("init: set done auth: " + auth);
+        Subscribe.debug("login: username and password given, trying login");
+        Subscribe.googleLogin = {
+          username: username,
+          password: password
+        };
+        apiClient = new Subscribe.ReaderApi;
+        login = apiClient.login();
+        login.done(function() {
+          Subscribe.log('login: login successful');
+          Subscribe.action.savePassword(username, password);
+          Subscribe.ReaderApiInst = apiClient;
+          $(document).trigger('subscribeLogin');
+          return jQT.goTo('#home');
         });
-        return set.fail(function() {
-          return Subscribe.log('failed keychain');
+        return login.fail(function() {
+          return Subscribe.alert('Invalid username or password', 'Login Error', 'OK');
         });
       }
     });
@@ -100,9 +114,22 @@ Subscribe.init = {
 };
 
 Subscribe.action = {
+  savePassword: function(username, password) {
+    var keychain, set;
+    Subscribe.debug("init: Saving password to keychain");
+    keychain = new Subscribe.Keychain;
+    set = keychain.authSet(username, password);
+    set.done(function(auth) {
+      return Subscribe.debug("init: set done auth: " + auth);
+    });
+    return set.fail(function() {
+      return Subscribe.log('failed keychain');
+    });
+  },
   list: function() {
     var request;
-    request = Subscribe.apiClient.list();
+    Subscribe.log('Subscribe.action: list');
+    request = Subscribe.ReaderApiInst.list();
     request.done(function(data) {
       var content;
       if (0 === data.subscriptions.length) {
@@ -121,17 +148,19 @@ Subscribe.action = {
   },
   login: function() {
     var apiClient, login;
+    Subscribe.log('Subscribe.action: login');
     apiClient = new Subscribe.ReaderApi;
     login = apiClient.login();
     return login.done(function() {
-      Subscribe.apiClient = apiClient;
+      Subscribe.log('Subscribe.action: login done');
+      Subscribe.ReaderApiInst = apiClient;
       return $(document).trigger('subscribeLogin');
     });
   },
   subscribe: function() {
     var request, url;
     url = $('#url').val();
-    request = Subscribe.apiClient.subscribe(url);
+    request = Subscribe.ReaderApiInst.subscribe(url);
     request.done(function(data) {
       return Subscribe.action.list();
     });
@@ -142,7 +171,7 @@ Subscribe.action = {
   unsubscribe: function(el) {
     var feedId, request;
     feedId = el.data('feed-id');
-    request = Subscribe.apiClient.unsubscribe(feedId);
+    request = Subscribe.ReaderApiInst.unsubscribe(feedId);
     request.done(function(data) {
       return Subscribe.action.removeSubscription(feedId);
     });
@@ -162,7 +191,7 @@ Subscribe.action = {
       title: el.text()
     };
     $("#title").html(ich.title_template(title));
-    request = Subscribe.apiClient.details(feedId);
+    request = Subscribe.ReaderApiInst.details(feedId);
     request.done(function(data) {
       data.id = feedId;
       return $("#details").html(ich.details_template(data));
@@ -192,11 +221,12 @@ Subscribe.Keychain = (function() {
     Subscribe.debug("Keychain: Setting username: " + username + " and password: " + password);
     dfd = $.Deferred();
     auth = {
-      username: username,
-      password: password
+      username: escape(username),
+      password: escape(password)
     };
+    Subscribe.debug("Keychain: auth: ", auth);
     string = JSON.stringify(auth);
-    set = this.set('auth', string);
+    set = this.set('google_login', string);
     set.done(function(data) {
       Subscribe.debug("Keychain: authSet done data: " + data);
       return dfd.resolve(data);
@@ -208,15 +238,24 @@ Subscribe.Keychain = (function() {
     var dfd, get;
     Subscribe.debug("Keychain: authGet called");
     dfd = $.Deferred();
-    get = this.get('auth');
-    get.done(function(data) {
-      Subscribe.debug("Keychain: authGet done data: " + data);
-      return dfd.resolve(JSON.parse(data));
-    });
-    get.fail(function() {
-      Subscribe.debug("Keychain: authGet fail");
-      return dfd.reject();
-    });
+    if (Subscribe.googleLogin) {
+      Subscribe.debug("Keychain: Already have googleLogin, just returning that");
+      dfd.resolve(Subscribe.googleLogin);
+    } else {
+      get = this.get('google_login');
+      get.done(function(data) {
+        var auth;
+        Subscribe.debug("Keychain: authGet done data: " + data);
+        auth = JSON.parse(unescape(data));
+        auth.username = unescape(auth.username);
+        auth.password = unescape(auth.password);
+        return dfd.resolve(auth);
+      });
+      get.fail(function() {
+        Subscribe.debug("Keychain: authGet fail");
+        return dfd.reject();
+      });
+    }
     return dfd.promise();
   };
 
@@ -232,6 +271,7 @@ Subscribe.Keychain = (function() {
       return dfd.reject();
     };
     if (Subscribe.env() === 'device') {
+      value = escape(value);
       window.plugins.keychain.setForKey(key, value, 'com.benubois.Subscribe', success, fail);
     } else {
       callback = function() {
@@ -248,7 +288,7 @@ Subscribe.Keychain = (function() {
     dfd = $.Deferred();
     success = function(key, value) {
       Subscribe.debug("Keychain: get success key: " + key);
-      return dfd.resolve(value);
+      return dfd.resolve(unescape(value));
     };
     fail = function() {
       Subscribe.debug("Keychain: get fail");
@@ -258,7 +298,7 @@ Subscribe.Keychain = (function() {
       window.plugins.keychain.getForKey(key, 'com.benubois.Subscribe', success, fail);
     } else {
       callback = function() {
-        return success('auth', '{"username":"subscribeapp.testing","password":"hAMWCY2+Jfb7,q"}');
+        return success('auth', '%7B%22username%22%3A%22subscribeapp.testing%22%2C%22password%22%3A%22hAMWCY2+Jfb7%252Cq%22%7D');
       };
       setTimeout(callback, 10);
     }
@@ -443,7 +483,7 @@ Subscribe.ReaderApi = (function() {
     var credentials, dfd;
     var _this = this;
     dfd = $.Deferred();
-    credentials = Subscribe.getLogin();
+    credentials = Subscribe.KeychainInst.authGet();
     credentials.done(function(login) {
       var authRequest;
       authRequest = _this.getAuth(login.username, login.password);
@@ -451,7 +491,7 @@ Subscribe.ReaderApi = (function() {
         var tokenRequest;
         return tokenRequest = _this.getToken(_this.auth, dfd);
       });
-      return authRequest.error(function(data) {
+      return authRequest.fail(function(data) {
         return dfd.reject();
       });
     });
@@ -476,7 +516,7 @@ Subscribe.ReaderApi = (function() {
       },
       error: function(data) {
         Subscribe.log(data);
-        return alert('Invalid username or password');
+        return Subscribe.debug('readerApi.getAuth: Invalid username or password');
       }
     });
   };

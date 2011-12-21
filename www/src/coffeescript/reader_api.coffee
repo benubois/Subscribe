@@ -156,7 +156,7 @@ class Subscribe.ReaderApi
     dfd = $.Deferred()
     
     # Get Google login info from keychain
-    credentials = Subscribe.getLogin()
+    credentials = Subscribe.KeychainInst.authGet()
     
     # When the login info returns, complete the authentication process
     credentials.done (login) =>
@@ -167,7 +167,7 @@ class Subscribe.ReaderApi
         
         # Get token
         tokenRequest = @getToken @auth, dfd
-      authRequest.error (data) =>
+      authRequest.fail (data) =>
         # Auth failed, callers can use login.fail
         dfd.reject()
     
@@ -189,7 +189,8 @@ class Subscribe.ReaderApi
         @auth = data.match(/Auth=(.*)/)[1]
       error: (data) =>
         Subscribe.log data
-        alert('Invalid username or password')
+        Subscribe.debug('readerApi.getAuth: Invalid username or password')
+        
 
   getToken: (auth, dfd) ->
     $.ajax
