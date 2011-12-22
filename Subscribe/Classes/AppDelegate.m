@@ -30,13 +30,9 @@
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-    [NSClassFromString(@"WebView") _enableRemoteInspector];
-
-	NSArray *keyArray = [launchOptions allKeys];
-	if ([launchOptions objectForKey:[keyArray objectAtIndex:0]]!=nil) 
+    NSURL* url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+    if (url && [url isKindOfClass:[NSURL class]])
 	{
-		NSURL *url = [launchOptions objectForKey:[keyArray objectAtIndex:0]];
 		self.invokeString = [url absoluteString];
 		NSLog(@"Subscribe launchOptions = %@",url);
 	}
@@ -73,6 +69,10 @@
 		NSString* jsString = [NSString stringWithFormat:@"var invokeString = \"%@\";", self.invokeString];
 		[theWebView stringByEvaluatingJavaScriptFromString:jsString];
 	}
+	
+	 // Black base color for background matches the native apps
+   	theWebView.backgroundColor = [UIColor blackColor];
+    
 	return [ super webViewDidFinishLoad:theWebView ];
 }
 
@@ -93,7 +93,7 @@
 /**
  * Start Loading Request
  * This is where most of the magic happens... We take the request(s) and process the response.
- * From here we can re direct links and other protocalls to different internal methods.
+ * From here we can redirect links and other protocols to different internal methods.
  */
 - (BOOL)webView:(UIWebView *)theWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
