@@ -1,9 +1,9 @@
 Subscribe =
   googleLogin: null
   version: '1.0.0'
-  debugMode: true
+  debugMode: false
   debug: (message) ->
-    Subscribe.log message if Subscribe.debugMode
+    Subscribe.log message if Subscribe.debugMode is true
   log: ->
     window.Subscribe.logHistory = window.Subscribe.logHistory || []
     window.Subscribe.logHistory.push(arguments)
@@ -28,6 +28,6 @@ Subscribe =
       else
         alert message
   onDeviceReady: ->
-    Subscribe.log 'Subscribe: onDeviceReady'
+    Subscribe.debug 'Subscribe: onDeviceReady'
     $.each Subscribe.init, (i, item) -> 
       item();

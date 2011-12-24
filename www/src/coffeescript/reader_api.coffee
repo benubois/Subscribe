@@ -64,6 +64,32 @@ class Subscribe.ReaderApi
     
     dfd.promise()
   
+  list: ->
+    dfd = $.Deferred()
+    
+    subRequest = @_list()
+    
+    subRequest.success (data) ->
+      # get details successful, resolve with info
+      dfd.resolve data
+    
+    subRequest.fail (data) =>
+      if 400 is data.status
+
+        # If token is invalid, get a new one and try again
+        login = @login()
+        login.done () =>
+          subRequest = @_list()
+          
+          subRequest.success (data) ->
+            # get details successful, resolve with info
+            dfd.resolve data
+        login.fail () ->
+          dfd.reject
+          alert 'Couldn’t log in after 2 tries'
+    
+    dfd.promise()
+  
   unsubscribe: (feedId) ->
     dfd = $.Deferred()
     
@@ -103,11 +129,8 @@ class Subscribe.ReaderApi
       dataType: 'json'
       headers:
         "Authorization": "GoogleLogin auth=#{@auth}"
-      success: (data) ->
-        # list = ich.subsciption_list_template(data)
-        # $("#subsciption_list").html list
 
-  list: () ->
+  _list: () ->
     $.ajax
       url: "#{@host}/reader/api/0/subscription/list"
       data:
@@ -117,7 +140,9 @@ class Subscribe.ReaderApi
       dataType: 'json'
       headers:
         "Authorization": "GoogleLogin auth=#{@auth}"
-  
+      error: ->
+        $(document).trigger 'authFailure'
+
   _subscribe: (domain) ->
     
     queryString = $.param
@@ -188,7 +213,8 @@ class Subscribe.ReaderApi
       success: (data) =>
         @auth = data.match(/Auth=(.*)/)[1]
       error: (data) =>
-        Subscribe.log data
+        Subscribe.debug data
+        jQT.goTo '#login'
         Subscribe.debug('readerApi.getAuth: Invalid username or password')
         
 

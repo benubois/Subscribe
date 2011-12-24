@@ -76,6 +76,6 @@ class Subscribe.Keychain
     if Subscribe.env() is 'device'
       window.plugins.keychain.getForKey(key, 'com.benubois.Subscribe', success, fail)
     else    
-      callback = -> success 'auth', '%7B%22username%22%3A%22subscribeapp.testing%22%2C%22password%22%3A%22hAMWCY2+Jfb7%252Cq%22%7D'
+      callback = -> success 'auth', '%7B%22username%22%3A%22subscribeapp.testing%22%2C%22password%22%3A%221passw0rd4%22%7D'
       setTimeout callback, 10
     dfd.promise()

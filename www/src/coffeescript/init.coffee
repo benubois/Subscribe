@@ -3,21 +3,26 @@ Subscribe.init =
     # Instantiate keychain
     Subscribe.KeychainInst = new Subscribe.Keychain
   auth: ->
-    Subscribe.log 'init: get auth'
+    Subscribe.debug 'init: get auth'
     get = Subscribe.KeychainInst.authGet()
     get.done (auth) -> 
-      Subscribe.log "init: get auth done auth:", auth
+      Subscribe.debug "init: get auth done auth:", auth
       Subscribe.googleLogin = auth
-      Subscribe.action.login();
+      Subscribe.action.login()
       jQT.goTo '#home'
     get.fail -> 
-      Subscribe.log "init: get auth failed"
+      Subscribe.debug "init: get auth failed"
       jQT.goTo '#login'
 
   loginDone: ->
     $(document).on 'subscribeLogin', ->
-      Subscribe.log 'Subscribe.init: loginDone'
+      Subscribe.debug 'Subscribe.init: loginDone'
       Subscribe.action.list()
+
+  authFailure: ->
+    $(document).on 'authFailure', ->
+      Subscribe.alert('Invalid username or password', 'Login Error', 'OK')
+      jQT.goTo '#login'
 
   buttons: ->
     # Subscription detail
@@ -37,8 +42,12 @@ Subscribe.init =
     $('#jqt').on 'tap', '.button-login', (e) ->
       Subscribe.debug "init: login tap"
       parent = $(this).parents('.current')
-      username = $('#field-username', parent).val();
-      password = $('#field-password', parent).val();
+      usernameField = $('#field-username', parent)
+      passwordField = $('#field-password', parent)
+
+      username = usernameField.val()
+      password = passwordField.val()
+      
       if username is '' || password is ''
         Subscribe.debug "init: username and password validation failed"
         Subscribe.alert('You must enter a username and password', 'Login Error', 'OK')
@@ -51,13 +60,19 @@ Subscribe.init =
         apiClient = new Subscribe.ReaderApi
         login = apiClient.login()
         login.done () ->
-          Subscribe.log 'login: login successful'
+          Subscribe.debug 'login: login successful'
           Subscribe.action.savePassword(username, password)
           # Set up the client for the rest of the api to use
           Subscribe.ReaderApiInst = apiClient
           # Publish event other stuff can subscribe to
-          $(document).trigger 'subscribeLogin';
+          $(document).trigger 'subscribeLogin'
+          
+          # Go to home screen
           jQT.goTo '#home'
+          
+          # Clear field values
+          usernameField.val('')
+          passwordField.val('')
         login.fail () ->
           Subscribe.alert('Invalid username or password', 'Login Error', 'OK')
       
@@ -70,10 +85,10 @@ Subscribe.action =
     set.done (auth) ->
       Subscribe.debug "init: set done auth: #{auth}"
     set.fail ->
-      Subscribe.log 'failed keychain'
+      Subscribe.debug 'failed keychain'
     
   list: ->
-    Subscribe.log 'Subscribe.action: list'
+    Subscribe.debug 'Subscribe.action: list'
     request = Subscribe.ReaderApiInst.list()
     request.done (data) ->
       if 0 is data.subscriptions.length
@@ -88,27 +103,38 @@ Subscribe.action =
       console.log data  
 
   login: ->
-    Subscribe.log 'Subscribe.action: login'
+    Subscribe.debug 'Subscribe.action: login'
     apiClient = new Subscribe.ReaderApi
     login = apiClient.login()
     login.done () ->
-      Subscribe.log 'Subscribe.action: login done'
+      Subscribe.debug 'Subscribe.action: login done'
       # Set up the client for the rest of the api to use
       Subscribe.ReaderApiInst = apiClient
       # Publish event other stuff can subscribe to
-      $(document).trigger 'subscribeLogin';
+      $(document).trigger 'subscribeLogin'
 
   subscribe: ->
-    url = $('#url').val()
-    request = Subscribe.ReaderApiInst.subscribe(url)
-    # Request succeeded, add data to detail template
-    request.done (data) ->
-      # Update the list
-      Subscribe.action.list()
-      # unsubscribe request failed
-    # TODO add error info
-    request.fail (data) ->
-      Subscribe.alert('subscribe failed')
+    urlField = $('#url')
+    url = urlField.val()
+    
+    if url is ''
+      Subscribe.debug "init: username and password validation failed"
+      Subscribe.alert('You must enter a url', 'Subscribe Error', 'OK')
+      return false
+    else
+      request = Subscribe.ReaderApiInst.subscribe(url)
+      # Request succeeded, add data to detail template
+      request.done (data) ->
+        # Update the list
+        Subscribe.action.list()
+        
+        # Go home
+        jQT.goTo '#home'
+        
+        # Clear value
+        urlField.val('')
+      request.fail (data) ->
+        Subscribe.alert('Subscribe failed', 'Subscribe Error', 'OK')
 
   unsubscribe: (el) ->
     feedId = el.data('feed-id')
@@ -119,7 +145,7 @@ Subscribe.action =
     # unsubscribe request failed
     # TODO add error info
     request.fail (data) ->
-      Subscribe.alert('unsubscribe failed')
+      Subscribe.alert('Unsubscribe failed', 'Subscribe Error', 'OK')
   
   removeSubscription: (id) ->
     $('#subscriptions').find('li a').each ->
