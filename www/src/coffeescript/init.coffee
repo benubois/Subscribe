@@ -23,16 +23,22 @@ Subscribe.init =
     # Subscription detail
     $('#jqt').on 'tap', '.subscription', (e) ->
       Subscribe.action.detail($(this))
+      
     # Unsubscribe
     $('#jqt').on 'tap', '.unsubscribe', (e) ->
       Subscribe.action.unsubscribe($(this))
+      
+    # Refresh
+    $('#jqt').on 'tap', '.refresh', (e) ->
+      Subscribe.action.list()
 
   login: ->
     # Login
-    $('#jqt').on 'tap', '#button-login', (e) ->
+    $('#jqt').on 'tap', '.button-login', (e) ->
       Subscribe.debug "init: login tap"
-      username = $('#field-username').val();
-      password = $('#field-password').val();
+      parent = $(this).parents('.current')
+      username = $('#field-username', parent).val();
+      password = $('#field-password', parent).val();
       if username is '' || password is ''
         Subscribe.debug "init: username and password validation failed"
         Subscribe.alert('You must enter a username and password', 'Login Error', 'OK')

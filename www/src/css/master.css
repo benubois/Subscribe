@@ -29,7 +29,7 @@
 }
 
 #jqt .button, #jqt .cancel, #jqt .add {
-	background-size: 16px 29px;
+	background-size: 16px 30px;
     -webkit-border-image: url(../images/toolButton.png) 0 10 0 10;
 }
 
@@ -38,7 +38,7 @@
 }
 
 #jqt .button.active, #jqt .cancel.active, #jqt .add.active {
-	background-size: 16px 29px;
+	background-size: 16px 30px;
     -webkit-border-image: url(../images/toolButtonTouch.png) 0 10 0 10;	
 }
 #jqt #details li {
@@ -90,6 +90,21 @@
     background: url(../images/toolbarBottom.png) 0 100% repeat-x;
 }
 
-#home {
+#jqt #home {
 	padding-bottom: 44px;
+}
+
+#jqt .refresh {
+	background: url('../images/refresh.png') no-repeat scroll top left;
+    left: 0;
+	top: 0;
+    right: auto;
+    position: absolute;
+    overflow: hidden;
+	width: 135px;
+	height: 88px;
+	background-size: 68px 44px;
+}
+#jqt .refresh.active {
+	background-image: url('../images/refreshTouch.png');
 }

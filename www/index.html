@@ -13,15 +13,15 @@
 	<script src="lib/jqtouch/jqtouch.js"></script>
 	<script type="text/javascript" charset="utf-8">
     var jQT = new $.jQTouch({
-        addGlossToIcon: false,
-        statusBar: 'black',
         preloadImages: [
             'src/images/backButtonTouch.png',
             'src/images/toolButtonTouch.png',
             'src/images/toolbar.png',
             'src/images/activeButton.png',
             'src/images/redButton.png',
-            'src/images/redButtonTouch.png'
+            'src/images/redButtonTouch.png',
+			'src/images/refresh.png',
+			'src/images/refreshTouch.png'
          ]
     });
 	</script>
@@ -50,7 +50,20 @@
 		<div id="login">
 			<div class="toolbar">
 				<h1>Subscribe</h1>
-				<a class="button" href="#" id="button-login">Login</a>
+				<a class="button button-login" href="#">Login</a>
+			</div>
+			<div class="view">
+				<ul class="edit rounded">
+					<li><input id="field-username" type="email" name="username" placeholder="Username"  /></li>
+					<li><input id="field-password" type="password" name="password" placeholder="Password" /></li>
+				</ul>
+			</div>
+		</div>
+		<div id="settings">
+			<div class="toolbar">
+				<h1>Subscribe</h1>
+				<a class="button cancel" href="#">Cancel</a>
+				<a class="button button-login" href="#">Login</a>
 			</div>
 			<div class="view">
 				<ul class="edit rounded">
@@ -78,8 +91,8 @@
 			{{/condition_has_subscriptions}}
 			</script>
 			<div class="toolbar bottom">
-				<a class="button leftButton" href="#" id="button-login">Login</a>
-				<a class="button" href="#login">Settings</a>
+				<a href="#" class="refresh"></a>
+				<a class="button slideup" href="#settings">Settings</a>
 			</div>
 		</div>
 		<div id="add" class="selectable">
