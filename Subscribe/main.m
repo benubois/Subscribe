@@ -2,16 +2,17 @@
 //  main.m
 //  Subscribe
 //
-//  Created by Ben Ubois on 11/28/11.
-//  Copyright __MyCompanyName__ 2011. All rights reserved.
+//  Created by Ben Ubois on 12/26/11.
+//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-int main(int argc, char *argv[]) {
-    
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    int retVal = UIApplicationMain(argc, argv, nil, @"AppDelegate");
-    [pool release];
-    return retVal;
+#import "SUAppDelegate.h"
+
+int main(int argc, char *argv[])
+{
+    @autoreleasepool {
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([SUAppDelegate class]));
+    }
 }

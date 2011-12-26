@@ -13,7 +13,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B571E4DA14847B9700935F45"
+               BlueprintIdentifier = "B5432F7014A8E14300FC77AD"
                BuildableName = "Subscribe.app"
                BlueprintName = "Subscribe"
                ReferencedContainer = "container:Subscribe.xcodeproj">
@@ -31,7 +31,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B571E4DA14847B9700935F45"
+            BlueprintIdentifier = "B5432F7014A8E14300FC77AD"
             BuildableName = "Subscribe.app"
             BlueprintName = "Subscribe"
             ReferencedContainer = "container:Subscribe.xcodeproj">
@@ -49,7 +49,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B571E4DA14847B9700935F45"
+            BlueprintIdentifier = "B5432F7014A8E14300FC77AD"
             BuildableName = "Subscribe.app"
             BlueprintName = "Subscribe"
             ReferencedContainer = "container:Subscribe.xcodeproj">
@@ -67,7 +67,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B571E4DA14847B9700935F45"
+            BlueprintIdentifier = "B5432F7014A8E14300FC77AD"
             BuildableName = "Subscribe.app"
             BlueprintName = "Subscribe"
             ReferencedContainer = "container:Subscribe.xcodeproj">
