@@ -10,4 +10,6 @@
 
 @interface SUSubscription : NSObject
 
+@property(nonatomic, copy) NSString *title;
+
 @end

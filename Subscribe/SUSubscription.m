@@ -10,4 +10,13 @@
 
 @implementation SUSubscription
 
+@synthesize title;
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.title = @"New Subscription";
+    }
+}
+
 @end
