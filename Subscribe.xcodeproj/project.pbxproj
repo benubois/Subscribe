@@ -24,7 +24,6 @@
 		B571E50014847B9700935F45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B571E4FF14847B9700935F45 /* main.m */; };
 		B571E50314847B9700935F45 /* PhoneGap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B571E50214847B9700935F45 /* PhoneGap.framework */; };
 		B571E50814847B9700935F45 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B571E50614847B9700935F45 /* Localizable.strings */; };
-		B571E50C14847B9700935F45 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B571E50A14847B9700935F45 /* Localizable.strings */; };
 		B571E50F14847B9700935F45 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B571E50E14847B9700935F45 /* icon.png */; };
 		B571E51114847B9700935F45 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B571E51014847B9700935F45 /* icon@2x.png */; };
 		B571E51314847B9700935F45 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = B571E51214847B9700935F45 /* icon-72.png */; };
@@ -64,7 +63,6 @@
 		B571E50114847B9700935F45 /* Subscribe-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Subscribe-Prefix.pch"; sourceTree = "<group>"; };
 		B571E50214847B9700935F45 /* PhoneGap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhoneGap.framework; path = /Users/Shared/PhoneGap/Frameworks/PhoneGap.framework; sourceTree = "<absolute>"; };
 		B571E50714847B9700935F45 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B571E50B14847B9700935F45 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Resources/es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B571E50E14847B9700935F45 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = Resources/icons/icon.png; sourceTree = "<group>"; };
 		B571E51014847B9700935F45 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "Resources/icons/icon@2x.png"; sourceTree = "<group>"; };
 		B571E51214847B9700935F45 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-72.png"; path = "Resources/icons/icon-72.png"; sourceTree = "<group>"; };
@@ -210,7 +208,6 @@
 		B571E50914847B9700935F45 /* es.lproj */ = {
 			isa = PBXGroup;
 			children = (
-				B571E50A14847B9700935F45 /* Localizable.strings */,
 			);
 			name = es.lproj;
 			sourceTree = "<group>";
@@ -309,7 +306,6 @@
 			files = (
 				B571E4FE14847B9700935F45 /* InfoPlist.strings in Resources */,
 				B571E50814847B9700935F45 /* Localizable.strings in Resources */,
-				B571E50C14847B9700935F45 /* Localizable.strings in Resources */,
 				B571E50F14847B9700935F45 /* icon.png in Resources */,
 				B571E51114847B9700935F45 /* icon@2x.png in Resources */,
 				B571E51314847B9700935F45 /* icon-72.png in Resources */,
@@ -377,14 +373,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				B571E50714847B9700935F45 /* en */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		B571E50A14847B9700935F45 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B571E50B14847B9700935F45 /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
