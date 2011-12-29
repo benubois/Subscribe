@@ -38,6 +38,7 @@
 		B5B3DB7B1498942600681412 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B5B3DB7A1498942600681412 /* Default@2x.png */; };
 		B5BEC782149F01B1008482B0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5BEC781149F01B1008482B0 /* Security.framework */; };
 		B5BEC78B149F0AA2008482B0 /* SAiOSKeychainPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = B5BEC78A149F0AA2008482B0 /* SAiOSKeychainPlugin.m */; };
+		B5DFB29514AC46D60037AA7D /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B5DFB29414AC46D60037AA7D /* icon@2x.png */; };
 		B5F35EA314989BE100B4550A /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B5F35EA214989BE100B4550A /* icon.png */; };
 		B5F35EA514989C7600B4550A /* icon_small.png in Resources */ = {isa = PBXBuildFile; fileRef = B5F35EA414989C7600B4550A /* icon_small.png */; };
 /* End PBXBuildFile section */
@@ -80,6 +81,7 @@
 		B5BEC781149F01B1008482B0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B5BEC789149F0AA2008482B0 /* SAiOSKeychainPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAiOSKeychainPlugin.h; sourceTree = "<group>"; };
 		B5BEC78A149F0AA2008482B0 /* SAiOSKeychainPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAiOSKeychainPlugin.m; sourceTree = "<group>"; };
+		B5DFB29414AC46D60037AA7D /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		B5F35EA214989BE100B4550A /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		B5F35EA414989C7600B4550A /* icon_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_small.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -120,6 +122,7 @@
 		B571E4CD14847B9700935F45 = {
 			isa = PBXGroup;
 			children = (
+				B5DFB29414AC46D60037AA7D /* icon@2x.png */,
 				B5BEC781149F01B1008482B0 /* Security.framework */,
 				B5F35EA414989C7600B4550A /* icon_small.png */,
 				B5F35EA214989BE100B4550A /* icon.png */,
@@ -316,6 +319,7 @@
 				B5B3DB7B1498942600681412 /* Default@2x.png in Resources */,
 				B5F35EA314989BE100B4550A /* icon.png in Resources */,
 				B5F35EA514989C7600B4550A /* icon_small.png in Resources */,
+				B5DFB29514AC46D60037AA7D /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
