@@ -7,3 +7,5 @@ subscribe.js
 *.perspective
 *.perspectivev3
 UserInterfaceState.xcuserstate
+vendor/
+.bundle/
