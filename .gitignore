@@ -9,3 +9,4 @@ subscribe.js
 UserInterfaceState.xcuserstate
 vendor/
 .bundle/
+www/*

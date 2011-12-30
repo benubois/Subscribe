@@ -18,7 +18,9 @@
 }
 
 #jqt .toolbar {
-    background: url(../images/toolbar.png) #6d84a2 repeat-x;
+	background-repeat: repeat-x;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFYAAABYCAIAAADgPpfQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAN5JREFUeNrs2UEKhDAQRNF2yHUEYe5/nYAgrgRxoRkGdKF4g345QvF/pTvpaq2R+5Q6LdkjGOf0EbQWImgiEAERWqSn4CACEdShCP5dcKBAFxBBBOYCXUAEEegCXUAEEYjgVoe6AAUiEIG5wCM6EYhgTTojCBEQwY2AApciCnQBCq65AAUoKOu2q0NdkN6ET6CACCXcCKZDXUAEIqAABSgwGtkRUIACFLgRzAXWpCcFHs5QgAIU+E0Kf4ooQAEK3AiWZcuyOlSH6pAIRCCCCF5E8GSS/nT98EVB9vMTYABxDqRmw4PyHwAAAABJRU5ErkJggg==);
+	background-color: #6d84a2;
 	background-size: 1px 44px;
     height: 44px;
 	border-bottom: 0;

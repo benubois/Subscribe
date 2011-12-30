@@ -262,6 +262,7 @@
 				B571E4D614847B9700935F45 /* Resources */,
 				B571E4D714847B9700935F45 /* Sources */,
 				B571E4D814847B9700935F45 /* Frameworks */,
+				21233EDD14AD9F5700F5C9D5 /* ShellScript */,
 				B571E4D914847B9700935F45 /* ShellScript */,
 			);
 			buildRules = (
@@ -325,6 +326,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		21233EDD14AD9F5700F5C9D5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "source ~/.bash_profile\n\"$PROJECT_DIR/_build.rb\"";
+		};
 		B571E4D914847B9700935F45 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

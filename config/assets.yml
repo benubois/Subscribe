@@ -2,15 +2,19 @@ package_assets:         on
 embed_assets:           off
 compress_assets:        on
 gzip_assets:            off
-package_path:           assets
+package_path:           www/assets
 javascript_compressor:  closure
+public_root:  test
 
 javascripts:
-  workspace:
-    - lib/js/*
+  subscribe:
+    - lib/js/phonegap.js
+    - lib/js/jquery.js
+    - lib/js/jqtouch.js
+    - lib/js/icanhaz.js
+    - lib/js/SAiOSKeychainPlugin.js
 
 stylesheets:
-  workspace:
-    - lib/theme/*.css
+  subscribe:
     - lib/theme/*.css
     - src/css/*.css
