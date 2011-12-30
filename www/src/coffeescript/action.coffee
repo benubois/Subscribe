@@ -90,10 +90,3 @@ Subscribe.action =
     # TODO add error info
     request.fail (data) ->
       console.log 'detail fail'    
-
-Subscribe.load =->
-  if 'browser' is Subscribe.env()
-    $(document).ready () ->
-      Subscribe.onDeviceReady()
-  else
-    document.addEventListener("deviceready", Subscribe.onDeviceReady, false)
