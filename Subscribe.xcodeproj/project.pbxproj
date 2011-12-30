@@ -120,7 +120,6 @@
 		B571E4CD14847B9700935F45 = {
 			isa = PBXGroup;
 			children = (
-				B5BEC781149F01B1008482B0 /* Security.framework */,
 				B5F35EA414989C7600B4550A /* icon_small.png */,
 				B5F35EA214989BE100B4550A /* icon.png */,
 				B5B3DB7A1498942600681412 /* Default@2x.png */,
@@ -143,6 +142,8 @@
 		B571E4DE14847B9700935F45 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5BEC781149F01B1008482B0 /* Security.framework */,
+				B571E50214847B9700935F45 /* PhoneGap.framework */,
 				B571E4DF14847B9700935F45 /* Foundation.framework */,
 				B571E4E114847B9700935F45 /* UIKit.framework */,
 				B571E4E314847B9700935F45 /* CoreGraphics.framework */,
@@ -163,7 +164,6 @@
 		B571E4F914847B9700935F45 /* Subscribe */ = {
 			isa = PBXGroup;
 			children = (
-				B571E50214847B9700935F45 /* PhoneGap.framework */,
 				B571E50414847B9700935F45 /* Resources */,
 				B571E51D14847B9700935F45 /* Classes */,
 				B571E52114847B9700935F45 /* Plugins */,
@@ -278,6 +278,9 @@
 /* Begin PBXProject section */
 		B571E4CF14847B9700935F45 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = B571E4D214847B9700935F45 /* Build configuration list for PBXProject "Subscribe" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -405,7 +408,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -423,7 +426,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -439,6 +442,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Subscribe/Subscribe-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Subscribe/Subscribe-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
@@ -452,7 +456,7 @@
 					/usr/lib/libSystem.B.dylib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -467,6 +471,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Subscribe/Subscribe-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Subscribe/Subscribe-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
@@ -480,7 +485,7 @@
 					/usr/lib/libSystem.B.dylib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

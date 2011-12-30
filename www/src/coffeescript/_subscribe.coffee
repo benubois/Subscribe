@@ -1,7 +1,7 @@
 Subscribe =
   googleLogin: null
   version: '1.0.0'
-  debugMode: false
+  debugMode: true
   debug: (message) ->
     Subscribe.log message if Subscribe.debugMode is true
   log: ->
@@ -10,7 +10,7 @@ Subscribe =
     if window.console
       console.log( Array.prototype.slice.call(arguments) )
   env: ->
-    if window.location.hostname is 'subscribe.benubois.com.dev'
+    if window.location.hostname is 'subscribe.benubois.com.dev' or window.location.hostname is 'localhost'
       'browser'
     else
       'device'
