@@ -1,0 +1,16 @@
+package_assets:         on
+embed_assets:           off
+compress_assets:        on
+gzip_assets:            off
+package_path:           assets
+javascript_compressor:  closure
+
+javascripts:
+  workspace:
+    - lib/js/*
+
+stylesheets:
+  workspace:
+    - lib/theme/*.css
+    - lib/theme/*.css
+    - src/css/*.css
