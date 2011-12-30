@@ -120,7 +120,6 @@
 		B571E4CD14847B9700935F45 = {
 			isa = PBXGroup;
 			children = (
-				B5BEC781149F01B1008482B0 /* Security.framework */,
 				B5F35EA414989C7600B4550A /* icon_small.png */,
 				B5F35EA214989BE100B4550A /* icon.png */,
 				B5B3DB7A1498942600681412 /* Default@2x.png */,
@@ -143,6 +142,7 @@
 		B571E4DE14847B9700935F45 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5BEC781149F01B1008482B0 /* Security.framework */,
 				B5BEC781149F01B1008482B0 /* Security.framework */,
 				B571E50214847B9700935F45 /* PhoneGap.framework */,
 				B571E4DF14847B9700935F45 /* Foundation.framework */,
