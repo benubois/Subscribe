@@ -9,6 +9,7 @@ js = %w{
   lib/js/jquery.js
   lib/js/jqtouch.js
   lib/js/icanhaz.js
+  lib/js/underscore.js
   lib/js/SAiOSKeychainPlugin.js
   src/javascript/subscribe.js
 }

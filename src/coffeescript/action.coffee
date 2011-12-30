@@ -12,13 +12,15 @@ Subscribe.action =
     Subscribe.debug 'Subscribe.action: list'
     request = Subscribe.ReaderApiInst.list()
     request.done (data) ->
-      if 0 is data.subscriptions.length
-        data.condition_no_subscriptions = true
-        data.condition_has_subscriptions = false
+      Subscribe.subscriptions = data
+      if 0 is Subscribe.subscriptions.subscriptions.length
+        Subscribe.subscriptions.condition_no_subscriptions = true
+        Subscribe.subscriptions.condition_has_subscriptions = false
       else
-        data.condition_no_subscriptions = false
-        data.condition_has_subscriptions = true
-      content = ich.subscriptions_list(data)
+        Subscribe.subscriptions.condition_no_subscriptions = false
+        Subscribe.subscriptions.condition_has_subscriptions = true
+      Subscribe.subscriptions.subscriptions = _.map(Subscribe.subscriptions.subscriptions, Subscribe.addUrl);
+      content = ich.subscriptions_list(Subscribe.subscriptions)
       $("#subscriptions").html content  
     request.fail (data) ->
       console.log data  

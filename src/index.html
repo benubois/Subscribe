@@ -11,6 +11,7 @@
 	<script src="../lib/js/jquery.js"></script>
 	<script src="../lib/js/jqtouch.js"></script>
 	<script src="../lib/js/icanhaz.js"></script>
+	<script src="../lib/js/underscore.js"></script>
 	<script src="../lib/js/SAiOSKeychainPlugin.js"></script>
 	<script src="javascript/subscribe.js"></script>
 	<!-- ASSETS_MARK -->
@@ -78,8 +79,19 @@
 			{{/condition_no_subscriptions}}
 
 			{{#condition_has_subscriptions}}
+			<li class="arrow">
+			<a href="#detail" class="subscription">
+				Reference
+			</a>
+			</li>
+			
 				{{#subscriptions}}
-					<li class="arrow"><a href="#detail" data-feed-id="{{ id }}" id="{{ index }}" class="subscription">{{ title }}</a></li>
+					<li class="arrow list-meta">
+					<a href="#detail" data-feed-id="{{ id }}" id="{{ index }}" class="subscription">
+						{{ title }}
+						<br /><span>{{ url }}</span>
+					</a>
+					</li>
 				{{/subscriptions}}
 			{{/condition_has_subscriptions}}
 			</script>

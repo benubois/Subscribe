@@ -19,6 +19,11 @@ Subscribe =
       host = 'http://subscribe.benubois.com.dev/index.php'
     else
       host = 'https://www.google.com'
+  addUrl: (subscription) ->
+    # Remove http://
+    subscription.url = subscription.htmlUrl.replace /^http:\/\//, ''
+    subscription.url = subscription.url.replace /\/$/, ''
+    subscription
   alert: (message, title, action) ->
       if Subscribe.env() is 'device'
         console.log 'should alert'
