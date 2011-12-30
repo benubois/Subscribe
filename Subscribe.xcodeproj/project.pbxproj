@@ -24,7 +24,6 @@
 		B571E50014847B9700935F45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B571E4FF14847B9700935F45 /* main.m */; };
 		B571E50314847B9700935F45 /* PhoneGap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B571E50214847B9700935F45 /* PhoneGap.framework */; };
 		B571E50814847B9700935F45 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B571E50614847B9700935F45 /* Localizable.strings */; };
-		B571E50C14847B9700935F45 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B571E50A14847B9700935F45 /* Localizable.strings */; };
 		B571E50F14847B9700935F45 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B571E50E14847B9700935F45 /* icon.png */; };
 		B571E51114847B9700935F45 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B571E51014847B9700935F45 /* icon@2x.png */; };
 		B571E51314847B9700935F45 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = B571E51214847B9700935F45 /* icon-72.png */; };
@@ -38,6 +37,7 @@
 		B5B3DB7B1498942600681412 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B5B3DB7A1498942600681412 /* Default@2x.png */; };
 		B5BEC782149F01B1008482B0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5BEC781149F01B1008482B0 /* Security.framework */; };
 		B5BEC78B149F0AA2008482B0 /* SAiOSKeychainPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = B5BEC78A149F0AA2008482B0 /* SAiOSKeychainPlugin.m */; };
+		B5DFB29514AC46D60037AA7D /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B5DFB29414AC46D60037AA7D /* icon@2x.png */; };
 		B5F35EA314989BE100B4550A /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B5F35EA214989BE100B4550A /* icon.png */; };
 		B5F35EA514989C7600B4550A /* icon_small.png in Resources */ = {isa = PBXBuildFile; fileRef = B5F35EA414989C7600B4550A /* icon_small.png */; };
 /* End PBXBuildFile section */
@@ -63,7 +63,6 @@
 		B571E50114847B9700935F45 /* Subscribe-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Subscribe-Prefix.pch"; sourceTree = "<group>"; };
 		B571E50214847B9700935F45 /* PhoneGap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhoneGap.framework; path = /Users/Shared/PhoneGap/Frameworks/PhoneGap.framework; sourceTree = "<absolute>"; };
 		B571E50714847B9700935F45 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B571E50B14847B9700935F45 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Resources/es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B571E50E14847B9700935F45 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = Resources/icons/icon.png; sourceTree = "<group>"; };
 		B571E51014847B9700935F45 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "Resources/icons/icon@2x.png"; sourceTree = "<group>"; };
 		B571E51214847B9700935F45 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-72.png"; path = "Resources/icons/icon-72.png"; sourceTree = "<group>"; };
@@ -80,6 +79,7 @@
 		B5BEC781149F01B1008482B0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B5BEC789149F0AA2008482B0 /* SAiOSKeychainPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAiOSKeychainPlugin.h; sourceTree = "<group>"; };
 		B5BEC78A149F0AA2008482B0 /* SAiOSKeychainPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAiOSKeychainPlugin.m; sourceTree = "<group>"; };
+		B5DFB29414AC46D60037AA7D /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		B5F35EA214989BE100B4550A /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		B5F35EA414989C7600B4550A /* icon_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_small.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -120,6 +120,7 @@
 		B571E4CD14847B9700935F45 = {
 			isa = PBXGroup;
 			children = (
+				B5BEC781149F01B1008482B0 /* Security.framework */,
 				B5F35EA414989C7600B4550A /* icon_small.png */,
 				B5F35EA214989BE100B4550A /* icon.png */,
 				B5B3DB7A1498942600681412 /* Default@2x.png */,
@@ -207,7 +208,6 @@
 		B571E50914847B9700935F45 /* es.lproj */ = {
 			isa = PBXGroup;
 			children = (
-				B571E50A14847B9700935F45 /* Localizable.strings */,
 			);
 			name = es.lproj;
 			sourceTree = "<group>";
@@ -306,7 +306,6 @@
 			files = (
 				B571E4FE14847B9700935F45 /* InfoPlist.strings in Resources */,
 				B571E50814847B9700935F45 /* Localizable.strings in Resources */,
-				B571E50C14847B9700935F45 /* Localizable.strings in Resources */,
 				B571E50F14847B9700935F45 /* icon.png in Resources */,
 				B571E51114847B9700935F45 /* icon@2x.png in Resources */,
 				B571E51314847B9700935F45 /* icon-72.png in Resources */,
@@ -319,6 +318,7 @@
 				B5B3DB7B1498942600681412 /* Default@2x.png in Resources */,
 				B5F35EA314989BE100B4550A /* icon.png in Resources */,
 				B5F35EA514989C7600B4550A /* icon_small.png in Resources */,
+				B5DFB29514AC46D60037AA7D /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,14 +373,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				B571E50714847B9700935F45 /* en */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		B571E50A14847B9700935F45 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B571E50B14847B9700935F45 /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -491,6 +483,64 @@
 			};
 			name = Release;
 		};
+		B5DFB29614AC4BF00037AA7D /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Benjamin Ubois";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Benjamin Ubois";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PROVISIONING_PROFILE = "FE6E123E-A6A4-4E21-A608-261071B20A14";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FE6E123E-A6A4-4E21-A608-261071B20A14";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Distribution;
+		};
+		B5DFB29714AC4BF00037AA7D /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Benjamin Ubois";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Benjamin Ubois";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Subscribe/Subscribe-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INFOPLIST_FILE = "Subscribe/Subscribe-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					UIKit,
+					"-weak_framework",
+					AVFoundation,
+					"-weak_framework",
+					CoreMedia,
+					"-weak_library",
+					/usr/lib/libSystem.B.dylib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "FE6E123E-A6A4-4E21-A608-261071B20A14";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FE6E123E-A6A4-4E21-A608-261071B20A14";
+				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Distribution;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -499,6 +549,7 @@
 			buildConfigurations = (
 				B571E52314847B9700935F45 /* Debug */,
 				B571E52414847B9700935F45 /* Release */,
+				B5DFB29614AC4BF00037AA7D /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -508,6 +559,7 @@
 			buildConfigurations = (
 				B571E52614847B9700935F45 /* Debug */,
 				B571E52714847B9700935F45 /* Release */,
+				B5DFB29714AC4BF00037AA7D /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
