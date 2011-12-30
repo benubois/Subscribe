@@ -7,7 +7,6 @@
 	<link rel="stylesheet" href="lib/jqtouch/jqtouch.css" />
 	<link rel="stylesheet" href="lib/themes/apple/theme.css" />
 	<link rel="stylesheet" href="src/css/master.css" />
-	<script src="lib/json2.js"></script>
 	<script src="lib/jquery.js"></script>
 	<script src="lib/SAiOSKeychainPlugin.js"></script>
 	<script src="lib/jqtouch/jqtouch.js"></script>
@@ -26,21 +25,7 @@
     });
 	</script>
 	<script src="lib/icanhaz.js"></script>
-
 	<script src="src/javascript/subscribe.js"></script>
-	
-	<script type="text/javascript" charset="utf-8">
-		
-	$(function(){
-	    
-		$('#add-subscription').tap(function(e){			
-			Subscribe.action.subscribe();
-			e.preventDefault();
-		});
-				
-	});
-        
-	</script>
 
 </head>
 <body onLoad="Subscribe.load()">
