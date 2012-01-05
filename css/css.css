@@ -14,43 +14,65 @@ a img {border:none;}
 :focus {outline:0;}
 
 /*------------------------------------------------------------------------------
-	HTML
+ HTML
 ------------------------------------------------------------------------------*/
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #333333;
-  background: #fff;
-  border-top: 4px solid #333;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	color: #333333;
+	background: #fff;
+	border-top: 15px solid #333;
+	padding: 48px 0 0 0;
+	font-size: 18px;
 }
-a:link, a:visited {
-  color: #0083ca;
-  outline: none;
-  text-decoration: none;
+a:link,a:visited {
+	color: #0083ca;
+	outline: none;
+	text-decoration: none;
 }
 a:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 ::-moz-selection {
-  color: #fff;
-  background: #000;
+	color: #fff;
+	background: #000;
 }
 ::selection {
-  color: #fff;
-  background: #000;
+	color: #fff;
+	background: #000;
 }
 p {
-	margin: 0 0 1.6em 0;
+	margin: 0 0 1.5em 0;
 }
 /*------------------------------------------------------------------------------
-	Structure
+ Structure
 ------------------------------------------------------------------------------*/
 .container {
 	width: 960px;
 	margin: 0 auto;
 }
+.screenshots {
+	width: 379px;
+	margin-right: 36px;
+	float: left;
+}
+.content {
+	padding-top: 50px;
+	width: 545px;
+	float: left;
+}
 /*------------------------------------------------------------------------------
-	Helpers
+ Helpers
 ------------------------------------------------------------------------------*/
 .large {
 	font-size: 24px;
+}
+a:hover.arrow {
+	text-decoration: none;
+}
+a:hover.arrow span {
+	text-decoration: underline;
+}
+.arrow:after {
+	content: "›";
+	padding-left: 10px;
 }
