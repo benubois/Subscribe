@@ -5,7 +5,6 @@
 	<meta name="description" content="Manage your Google Reader subscriptions on your iPhone or iPod touch" />
 	<title>{{ page.title }}</title>
 	<link rel="stylesheet" href="/css/css.css" />
-	<script src="/js/js.js"></script>
 	<script>
 		var _gaq=[['_setAccount','UA-172060-7'],['_trackPageview']];
 		(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
@@ -14,8 +13,9 @@
 	</script>
 </head>
 <body>
-	<div class="container">
-		{{ content }}
-	</div>
+	{{ content }}
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/js/lib.js"></script>
+	<script src="/js/js.js"></script>
 </body>
 </html>
