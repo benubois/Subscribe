@@ -128,10 +128,55 @@ li {
 	margin-right: 20px;
 }
 .support {
-	padding-top: 15px;
-	font-size: 14px;
+	padding-top: 5px;
+	font-size: 13px;
 	float: left;
 	width: 321px;
+	color: #666;
+}
+.support p {
+	margin-bottom: .8em;
+}
+
+/*------------------------------------------------------------------------------
+ Changes
+------------------------------------------------------------------------------*/
+body.changes {
+	padding-top: 10px;
+}
+body.changes {
+	font-family: Consolas, monospace;
+	font-size: 13px;
+}
+body.changes h1 {
+	font-weight: bold;
+	margin-bottom: 1.4em;
+	font-size: 16px;
+	border-bottom: 1px solid #333;
+}
+body.changes h2 {
+	font-size: 14px;
+}
+body.changes p,
+body.changes li {
+	font-weight: normal;
+	font-size: 13px;
+}
+body.changes ul {
+	margin-bottom: 1.5em;
+}
+body.changes li {
+	padding-left: 10px;
+	text-indent: -7px;
+}
+body.changes li:before {
+	position: relative;
+	left: -5px;
+	content: "-";
+}
+body.changes .content-wrap {
+	padding: 20px;
+	width: 600px;
 }
 /*------------------------------------------------------------------------------
  Helpers
@@ -151,4 +196,7 @@ a:hover.arrow span {
 }
 .ui-tabs-hide {
 	display: none;
+}
+.pad-top {
+	padding-top: 40px;
 }

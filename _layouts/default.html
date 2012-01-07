@@ -5,7 +5,7 @@
 	<meta name="description" content="Manage your Google Reader subscriptions on your iPhone or iPod touch" />
 	<title>{{ page.title }}</title>
 	<link rel="canonical" href="http://subscribeapp.com" />
-	<link rel="stylesheet" href="/css/css.css" />
+	<link rel="stylesheet" href="/css/css.css?{{ site.time | date: "%Y%m%d%H%M%S" }}" />
 	<script>
 		var _gaq=[['_setAccount','UA-172060-7'],['_trackPageview']];
 		(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
@@ -13,9 +13,11 @@
 		s.parentNode.insertBefore(g,s)}(document,'script'));
 	</script>
 </head>
-<body>
-	{{ content }}
-	<script src="/js/lib.js"></script>
-	<script src="/js/js.js"></script>
+<body class="{{ page.class }}">
+	<div class="content-wrap">
+		{{ content }}
+	</div>
+	<script src="/js/lib.js?{{ site.time | date: "%Y%m%d%H%M%S" }}"></script>
+	<script src="/js/js.js?{{ site.time | date: "%Y%m%d%H%M%S" }}"></script>
 </body>
 </html>
