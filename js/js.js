@@ -12,6 +12,9 @@ subscribe.init = {
 			}, 100);
 			return false;
 		});
+	},
+	tabs: function () {
+		$('.tabs').tabs().tabs('rotate', 4000);
 	}
 }
 $(document).ready(function() {

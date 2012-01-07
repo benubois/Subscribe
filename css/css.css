@@ -149,3 +149,6 @@ a:hover.arrow span {
 	content: "›";
 	padding-left: 10px;
 }
+.ui-tabs-hide {
+	display: none;
+}
