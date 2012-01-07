@@ -76,7 +76,7 @@ li {
 .phone-wrap {
 	position: absolute;
 }
-.phone-wrap .tabs {
+.phone-wrap .screenshots {
 	position: absolute;
 	top: 131px;
 	left: 31px;
@@ -88,14 +88,25 @@ li {
 	background: url('/images/phone_iphone_4s.png') no-repeat scroll top left;
 	width: 378px;
 	height: 744px;
+	z-index: 100;
 }
-.status {
+.phone-status {
 	top: 131px;
 	left: 31px;
 	position: absolute;
 	background: url('/images/phone_status_bar.png') no-repeat scroll top left;
 	width: 320px;
 	height: 20px;
+	z-index: 101;
+}
+.phone-gloss {
+	background: url('/images/phone_gloss.png') no-repeat scroll top left;
+	width: 131px;
+	height: 268px;
+	top: 131px;
+	left: 220px;
+	position: absolute;
+	z-index: 102;
 }
 .content {
 	padding-top: 50px;

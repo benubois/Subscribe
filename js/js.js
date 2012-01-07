@@ -13,8 +13,12 @@ subscribe.init = {
 			return false;
 		});
 	},
-	tabs: function () {
-		$('.tabs').tabs().tabs('rotate', 4000);
+	cycle: function () {
+		$('.cycle').cycle({
+			fx: 'scrollLeft',
+			speed: 300,
+			timeout: 4000
+		});
 	}
 }
 $(document).ready(function() {
