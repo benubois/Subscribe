@@ -78,7 +78,7 @@ li {
 }
 .phone-wrap .tabs {
 	position: absolute;
-	top: 132px;
+	top: 131px;
 	left: 31px;
 }
 .phone-mask {
@@ -87,10 +87,10 @@ li {
 	left: 0;
 	background: url('/images/phone_iphone_4s.png') no-repeat scroll top left;
 	width: 378px;
-	height: 996px;
+	height: 744px;
 }
 .status {
-	top: 132px;
+	top: 131px;
 	left: 31px;
 	position: absolute;
 	background: url('/images/phone_status_bar.png') no-repeat scroll top left;
