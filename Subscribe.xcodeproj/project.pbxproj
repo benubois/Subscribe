@@ -7,12 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		213068BB14B6908500EAA49B /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 213068B614B6908500EAA49B /* Icon@2x.png */; };
 		213068BC14B6908500EAA49B /* Icon-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 213068B714B6908500EAA49B /* Icon-ipad.png */; };
-		213068BD14B6908500EAA49B /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 213068B814B6908500EAA49B /* Icon.png */; };
 		213068BE14B6908500EAA49B /* Icon-settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 213068B914B6908500EAA49B /* Icon-settings.png */; };
 		213068BF14B6908500EAA49B /* Icon-settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 213068BA14B6908500EAA49B /* Icon-settings@2x.png */; };
 		213068C114B690D000EAA49B /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 213068C014B690D000EAA49B /* iTunesArtwork.png */; };
+		214FF41014B7E6DE00504277 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 214FF40F14B7E6DE00504277 /* Icon@2x.png */; };
 		B571E4E014847B9700935F45 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B571E4DF14847B9700935F45 /* Foundation.framework */; };
 		B571E4E214847B9700935F45 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B571E4E114847B9700935F45 /* UIKit.framework */; };
 		B571E4E414847B9700935F45 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B571E4E314847B9700935F45 /* CoreGraphics.framework */; };
@@ -44,12 +43,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		213068B614B6908500EAA49B /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		213068B714B6908500EAA49B /* Icon-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-ipad.png"; sourceTree = "<group>"; };
-		213068B814B6908500EAA49B /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		213068B914B6908500EAA49B /* Icon-settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-settings.png"; sourceTree = "<group>"; };
 		213068BA14B6908500EAA49B /* Icon-settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-settings@2x.png"; sourceTree = "<group>"; };
 		213068C014B690D000EAA49B /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
+		214FF40F14B7E6DE00504277 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		B571E4DB14847B9700935F45 /* Subscribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Subscribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B571E4DF14847B9700935F45 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B571E4E114847B9700935F45 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -122,12 +120,11 @@
 		B571E4CD14847B9700935F45 = {
 			isa = PBXGroup;
 			children = (
-				213068B614B6908500EAA49B /* Icon@2x.png */,
 				213068C014B690D000EAA49B /* iTunesArtwork.png */,
 				213068B714B6908500EAA49B /* Icon-ipad.png */,
-				213068B814B6908500EAA49B /* Icon.png */,
 				213068B914B6908500EAA49B /* Icon-settings.png */,
 				213068BA14B6908500EAA49B /* Icon-settings@2x.png */,
+				214FF40F14B7E6DE00504277 /* Icon@2x.png */,
 				B5B3DB7A1498942600681412 /* Default@2x.png */,
 				B5B3DB781498942000681412 /* Default.png */,
 				B571E52814847C4500935F45 /* www */,
@@ -318,12 +315,11 @@
 				B5B3DB791498942000681412 /* Default.png in Resources */,
 				B5B3DB7B1498942600681412 /* Default@2x.png in Resources */,
 				B5DFB29514AC46D60037AA7D /* icon@2x.png in Resources */,
-				213068BB14B6908500EAA49B /* Icon@2x.png in Resources */,
 				213068BC14B6908500EAA49B /* Icon-ipad.png in Resources */,
-				213068BD14B6908500EAA49B /* Icon.png in Resources */,
 				213068BE14B6908500EAA49B /* Icon-settings.png in Resources */,
 				213068BF14B6908500EAA49B /* Icon-settings@2x.png in Resources */,
 				213068C114B690D000EAA49B /* iTunesArtwork.png in Resources */,
+				214FF41014B7E6DE00504277 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
